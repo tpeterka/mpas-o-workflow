@@ -21,6 +21,7 @@ export OPENMP=true
 export HDF5_USE_FILE_LOCKING=FALSE
 export MPAS_SHELL=/bin/bash
 export CORE=ocean
+export SHAREDLIB=true
 echo "environment variables are set for building MPAS-Ocean"
 
 # set LD_LIBRARY_PATH

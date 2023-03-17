@@ -40,6 +40,7 @@ export OPENMP=true
 export HDF5_USE_FILE_LOCKING=FALSE
 export MPAS_SHELL=/bin/bash
 export CORE=ocean
+export SHAREDLIB=true
 
 # clone and build MPAS-O
 # echo "cloning and building MPAS-Ocean"
