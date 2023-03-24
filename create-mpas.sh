@@ -41,6 +41,7 @@ export HDF5_USE_FILE_LOCKING=FALSE
 export MPAS_SHELL=/bin/bash
 export CORE=ocean
 export SHAREDLIB=true
+export PROFILE_PRELIB="-L$HENSON/lib -lhenson-pmpi"
 
 # clone and build MPAS-O
 # echo "cloning and building MPAS-Ocean"
