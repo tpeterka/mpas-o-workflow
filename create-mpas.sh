@@ -3,17 +3,18 @@
 export SPACKENV=mpas
 export YAML=$PWD/mpas_spack.yaml
 
-# terminate script on error
-# set -e
+# add mpas-o-scorpio spack repo
+echo "adding custom spack repo for scorpio"
+spack repo add mpas-o-scorpio > /dev/null 2>&1
 
 # create spack environment
-echo "(re)creating spack environment $SPACKENV"
+echo "creating spack environment $SPACKENV"
 spack env deactivate > /dev/null 2>&1
 spack env remove -y $SPACKENV > /dev/null 2>&1
 spack env create $SPACKENV $YAML
 
 # activate environment
-echo "activating spack environment $SPACKENV"
+echo "activating spack environment"
 spack env activate $SPACKENV
 
 # install everything in environment
@@ -31,7 +32,7 @@ export MPAS_EXTERNAL_LIBS="${MPAS_EXTERNAL_LIBS} -lgomp"
 export NETCDF=`spack location -i netcdf-c`
 export NETCDFF=`spack location -i netcdf-fortran`
 export PNETCDF=`spack location -i parallel-netcdf`
-export PIO=`spack location -i scorpio`
+export PIO=`spack location -i mpas-o-scorpio`
 export HDF5=`spack location -i hdf5`
 export LOWFIVE=`spack location -i lowfive`
 export HENSON=`spack location -i henson`

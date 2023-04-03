@@ -64,10 +64,12 @@ This will take ~ 5 minutes to compile.
 
 ### Create a run script for MPAS-Ocean
 
-edit (create) `~/climate/E3SM/components/mpas-ocean/ocean_model`:
+Edit (create) `~/climate/E3SM/components/mpas-ocean/ocean_model`:
+
 `python3 ~/climate/mpas-o-workflow/mpas-henson.py`
 
 Set permissions of `ocean_model` to executable:
+
 `chmod 755 ~/climate/E3SM/components/mpas-ocean/ocean_model`
 
 -----
