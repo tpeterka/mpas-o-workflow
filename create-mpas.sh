@@ -61,3 +61,5 @@ export LD_LIBRARY_PATH=$PIO/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$LOWFIVE/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$HENSON/lib:$LD_LIBRARY_PATH
 
+export HDF5_PLUGIN_PATH=$LOWFIVE/lib
+export HDF5_VOL_CONNECTOR="lowfive under_vol=0;under_info={};"

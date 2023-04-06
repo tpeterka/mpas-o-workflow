@@ -76,7 +76,7 @@ Set permissions of `ocean_model` to executable:
 
 ## Setting up a test case to execute
 
-Compass is an E3SM system for generating and running test cases for MPAS-Ocean, and relies on conda environments. The instructions below assume you have cond or miniconda already installed. If not, go [here](https://docs.conda.io/en/latest/miniconda.html) first.
+Compass is an E3SM system for generating and running test cases for MPAS-Ocean, and relies on conda environments. The instructions below assume you have conda or miniconda already installed. If not, go [here](https://docs.conda.io/en/latest/miniconda.html) first.
 
 ### First time: install Compass and create Compass environment
 
