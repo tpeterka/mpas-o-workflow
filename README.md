@@ -123,6 +123,29 @@ Assumes that `load_dev_compass_1.2.0-alpha.4.sh` is the name of the conda enviro
 source ~/compass-env-only/load_dev_compass_1.2.0-alpha.4.sh
 compass setup -t ocean/baroclinic_channel/10km/default -w ~/spack-baroclinic-test -p ~/climate/E3SM/components/mpas-ocean -f ~/compass-env-only/compass.cfg
 ```
+Set the output file type for the test case:
+
+Edit `~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/streams.ocean`.
+
+Add `io_type="netcdf4">` to the `<stream name="output"` section of the file. E.g.,
+
+```
+<stream name="output"
+        type="output"
+        filename_template="output.nc"
+        filename_interval="01-00-00_00:00:00"
+        reference_time="0001-01-01_00:00:00"
+        clobber_mode="truncate"
+        precision="double"
+        output_interval="0000_00:00:01"
+        io_type="netcdf4">
+
+    <var_struct name="tracers"/>
+    <var name="xtime"/>
+    <var name="normalVelocity"/>
+    <var name="layerThickness"/>
+</stream>
+```
 
 ### Run the test case
 
