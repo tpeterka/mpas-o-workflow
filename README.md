@@ -127,7 +127,7 @@ Set the output file type for the test case:
 
 Edit `~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/streams.ocean`.
 
-Add `io_type="netcdf4">` to the `<stream name="output"` section of the file. E.g.,
+Add `io_type="netcdf4">` to the `<stream name="output"` section of the file:
 
 ```
 <stream name="output"
@@ -144,6 +144,32 @@ Add `io_type="netcdf4">` to the `<stream name="output"` section of the file. E.g
     <var name="xtime"/>
     <var name="normalVelocity"/>
     <var name="layerThickness"/>
+</stream>
+```
+
+If you want to use the output for particle tracing, append additional stream `mesh` and additional variables `ssh`, `normalTransportVelocity`, `vertTransportVelocityTop`, and `zTop` to the `stream name="output"` section of
+the `streams.ocean` file:
+
+```
+<stream name="output"
+        type="output"
+        filename_template="output.nc"
+        filename_interval="01-00-00_00:00:00"
+        reference_time="0001-01-01_00:00:00"
+        clobber_mode="truncate"
+        precision="double"
+        output_interval="0000_00:00:01"
+        io_type="netcdf4">
+
+    <var_struct name="tracers"/>
+    <var name="xtime"/>
+    <var name="normalVelocity"/>
+    <var name="layerThickness"/>
+    <stream name="mesh"/>
+    <var name="ssh"/>
+    <var name="normalTransportVelocity"/>
+    <var name="vertTransportVelocityTop"/>
+    <var name="zTop"/>
 </stream>
 ```
 
