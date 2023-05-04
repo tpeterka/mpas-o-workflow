@@ -14,14 +14,16 @@ using communicator  = MPI_Comm;
 int main(int argc, char* argv[])
 {
     fmt::print(stderr, "*** consumer hello world ***\n");
+
     return 0;
 
     diy::mpi::environment     env(argc, argv, MPI_THREAD_MULTIPLE);
     diy::mpi::communicator    world;
 
-    // TODO: get the communicator correctly from the workflow
     communicator local = MPI_COMM_WORLD;
     diy::mpi::communicator local_(local);
+
+    fmt::print(stderr, "consumer comm size = {}\n", local_.size());
 
     // PIO defs
     int my_rank = local_.rank();
