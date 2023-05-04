@@ -3,9 +3,11 @@
 export SPACKENV=mpas
 export YAML=$PWD/mpas_spack.yaml
 
-# add mpas-o-scorpio spack repo
+# add mpas-o-scorpio and lowfive spack repos
 echo "adding custom spack repo for scorpio"
 spack repo add mpas-o-scorpio > /dev/null 2>&1
+echo "adding spack repo for lowfive"
+spack repo add lowfive > /dev/null 2>&1
 
 # create spack environment
 echo "creating spack environment $SPACKENV"
@@ -61,5 +63,10 @@ export LD_LIBRARY_PATH=$PIO/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$LOWFIVE/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$HENSON/lib:$LD_LIBRARY_PATH
 
+# enable VOL plugin
 export HDF5_PLUGIN_PATH=$LOWFIVE/lib
 export HDF5_VOL_CONNECTOR="lowfive under_vol=0;under_info={};"
+
+# give openMP 1 core for now to prevent using all cores for threading
+# could set a more reasonable number to distribute cores between mpi + openMP
+export OMP_NUM_THREADS=1

@@ -1,21 +1,26 @@
 #include <diy/mpi/communicator.hpp>
+#include <diy/master.hpp>
 #include <thread>
 #include <dlfcn.h>
-#include <pio.h>
+#include "pio.h"
+#include "fmt/format.h"
 
 #define NDIM 1
-#define DIM_LEN 1024
-#define DIM_NAME "x"
-#define VAR_NAME "foo"
-#define START_DATA_VAL 100
+#define DIM_LEN 3
+#define VAR_NAME "normalTransportVelocity"
 
 using communicator  = MPI_Comm;
 
 int main(int argc, char* argv[])
 {
+    fmt::print(stderr, "*** consumer hello world ***\n");
+    return 0;
+
     diy::mpi::environment     env(argc, argv, MPI_THREAD_MULTIPLE);
     diy::mpi::communicator    world;
 
+    // TODO: get the communicator correctly from the workflow
+    communicator local = MPI_COMM_WORLD;
     diy::mpi::communicator local_(local);
 
     // PIO defs
@@ -26,7 +31,7 @@ int main(int argc, char* argv[])
     int iosysid;
     int ncid;
     int format = PIO_IOTYPE_NETCDF4P;
-    int *buffer = NULL;
+    double *buffer = NULL;
     PIO_Offset elements_per_pe;
     PIO_Offset *compdof = NULL;
     int dim_len[1] = {DIM_LEN};
@@ -53,7 +58,7 @@ int main(int argc, char* argv[])
     for (int i = 0; i < elements_per_pe; i++)
         compdof[i] = (my_rank * elements_per_pe + i + 1) + 10;
 
-    PIOc_InitDecomp(iosysid, PIO_INT, NDIM, dim_len, (PIO_Offset)elements_per_pe, compdof, &ioid, NULL, NULL, NULL);
+    PIOc_InitDecomp(iosysid, PIO_DOUBLE, NDIM, dim_len, (PIO_Offset)elements_per_pe, compdof, &ioid, NULL, NULL, NULL);
     free(compdof);
 
     // debug
@@ -72,17 +77,13 @@ int main(int argc, char* argv[])
     fmt::print(stderr, "*** consumer after inquiring variable ID {} and before reading data ***\n", varid);
 
     // read the data
-    buffer = (int*)(malloc(elements_per_pe * sizeof(int)));
+    buffer = (double*)(malloc(elements_per_pe * sizeof(double)));
     PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, buffer);
-    // check the data values
+
+    // print the data values
     for (int i = 0; i < elements_per_pe; i++)
-    {
-        if (buffer[i] != START_DATA_VAL + my_rank)
-        {
-            fmt::print(stderr, "*** consumer error: buffer[{}] = {} which should be {} ***\n", i, buffer[i], START_DATA_VAL + my_rank);
-            abort();
-        }
-    }
+        fmt::print(stderr, "buffer[{}] = {}\n", i, buffer[i]);
+
     free(buffer);
 
     // debug
@@ -92,8 +93,6 @@ int main(int argc, char* argv[])
     PIOc_closefile(ncid);
     PIOc_freedecomp(iosysid, ioid);
     PIOc_finalize(iosysid);
-    if (!shared)
-        H5Pclose(plist);
 
     // debug
     fmt::print(stderr, "*** consumer after closing file ***\n");

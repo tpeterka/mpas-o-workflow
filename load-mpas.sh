@@ -34,7 +34,11 @@ export LD_LIBRARY_PATH=$LOWFIVE/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$HENSON/lib:$LD_LIBRARY_PATH
 echo "library paths are set for running MPAS-Ocean"
 
+# enable VOL plugin
 export HDF5_PLUGIN_PATH=$LOWFIVE/lib
 export HDF5_VOL_CONNECTOR="lowfive under_vol=0;under_info={};"
 echo "environment variables are set for running LowFive"
 
+# give openMP 1 core for now to prevent using all cores for threading
+# could set a more reasonable number to distribute cores between mpi + openMP
+export OMP_NUM_THREADS=1

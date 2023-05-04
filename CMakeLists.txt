@@ -54,12 +54,21 @@ endif                       ()
 set                         (libraries ${libraries} ${LOWFIVE_LIBRARY} ${LOWFIVE_DIST_LIBRARY})
 include_directories         (SYSTEM ${LOWFIVE_INCLUDE_DIR}
                             SYSTEM ${LOWFIVE_INCLUDE_DIR}/diy)
+# Henson
+if                          (HENSON_PATH)
+    set                     (HENSON_LIBRARY ${HENSON_PATH}/lib/libhenson.a)
+else                        ()
+    message                 ("Looking for Henson")
+    find_package            (henson REQUIRED)
+endif                       ()
+message                     ("HENSON_LIBRARY = ${HENSON_LIBRARY}")
+set                         (libraries ${libraries} ${HENSON_LIBRARY})
 
 # HDF5
 if                          (HDF5_PATH)
     set                     (HDF5_LIBRARY ${HDF5_PATH}/lib/libhdf5.so)
     set                     (HDF5_HL_LIBRARY ${HDF5_PATH}/lib/libhdf5_hl.so)
-    set                     (HDF5_HL_INCLUDE_DIR ${HDF5_PATH}/include)
+    set                     (HDF5_INCLUDE_DIR ${HDF5_PATH}/include)
   message                   ("HDF5_LIBRARY = " ${HDF5_LIBRARY})
   message                   ("HDF5_HL_LIBRARY = " ${HDF5_HL_LIBRARY})
   message                   ("HDF5_INCLUDE_DIR = " ${HDF5_INCLUDE_DIR})

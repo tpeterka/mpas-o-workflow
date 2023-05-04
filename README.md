@@ -173,7 +173,7 @@ the `streams.ocean` file:
 </stream>
 ```
 
-### Run the test case
+### Run the test case through compass
 
 Assumes that `load_dev_compass_1.2.0-alpha.4.sh` is the name of the conda environment load script created initially
 
@@ -182,6 +182,17 @@ source ~/compass-env-only/load_dev_compass_1.2.0-alpha.4.sh
 source ~/climate/mpas-o-workflow/load-mpas.sh
 cd ~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default
 compass run
+```
+
+### Run the test case through henson
+
+Assumes that `load_dev_compass_1.2.0-alpha.4.sh` is the name of the conda environment load script created initially
+
+```
+source ~/compass-env-only/load_dev_compass_1.2.0-alpha.4.sh
+source ~/climate/mpas-o-workflow/load-mpas.sh
+cd ~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
+mpiexec -n 5 python3 ~/climate/mpas-o-workflow/mpas-henson.py
 ```
 
 
