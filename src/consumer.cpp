@@ -5,29 +5,27 @@
 #include "pio.h"
 #include "fmt/format.h"
 
+// #define NDIM 1
+// #define DIM_LEN 1
+// #define VAR_NAME "normalTransportVelocity"
+
 #define NDIM 1
-#define DIM_LEN 3
-#define VAR_NAME "normalTransportVelocity"
+#define DIM_LEN 800
+#define VAR_NAME "bottomDepth"
+
+#define INFILE "output.nc"
 
 using communicator  = MPI_Comm;
 
 int main(int argc, char* argv[])
 {
-    fmt::print(stderr, "*** consumer hello world ***\n");
-
-    return 0;
-
     diy::mpi::environment     env(argc, argv, MPI_THREAD_MULTIPLE);
     diy::mpi::communicator    world;
-
-    communicator local = MPI_COMM_WORLD;
-    diy::mpi::communicator local_(local);
-
-    fmt::print(stderr, "consumer comm size = {}\n", local_.size());
+    communicator mpi_world = MPI_COMM_WORLD;
 
     // PIO defs
-    int my_rank = local_.rank();
-    int ntasks  = local_.size();
+    int my_rank = world.rank();
+    int ntasks  = world.size();
     int ioproc_stride = 1;
     int ioproc_start = 0;
     int iosysid;
@@ -51,7 +49,7 @@ int main(int argc, char* argv[])
 //     }
 
     // init PIO
-    PIOc_Init_Intracomm(local, ntasks, ioproc_stride, ioproc_start, PIO_REARR_SUBSET, &iosysid);
+    PIOc_Init_Intracomm(mpi_world, ntasks, ioproc_stride, ioproc_start, PIO_REARR_SUBSET, &iosysid);
 
     // decomposition
     elements_per_pe = DIM_LEN / ntasks;
@@ -67,7 +65,7 @@ int main(int argc, char* argv[])
     fmt::print(stderr, "*** consumer before opening file ***\n");
 
     // open file for reading
-    PIOc_openfile(iosysid, &ncid, &format, "example1.nc", PIO_NOWRITE);
+    PIOc_openfile(iosysid, &ncid, &format, INFILE, PIO_NOWRITE);
 
     // debug
     fmt::print(stderr, "*** consumer after opening file and before inquiring variable ID ***\n");
@@ -77,6 +75,7 @@ int main(int argc, char* argv[])
 
     // debug
     fmt::print(stderr, "*** consumer after inquiring variable ID {} and before reading data ***\n", varid);
+    fmt::print(stderr, "*** consumer elements_per_pe {} ***\n", elements_per_pe);
 
     // read the data
     buffer = (double*)(malloc(elements_per_pe * sizeof(double)));

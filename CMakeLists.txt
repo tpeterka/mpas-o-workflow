@@ -57,12 +57,14 @@ include_directories         (SYSTEM ${LOWFIVE_INCLUDE_DIR}
 # Henson
 if                          (HENSON_PATH)
     set                     (HENSON_LIBRARY ${HENSON_PATH}/lib/libhenson.a)
+    set                     (HENSON_PMPI_LIBRARY ${HENSON_PATH}/lib/libhenson-pmpi.so)
 else                        ()
     message                 ("Looking for Henson")
     find_package            (henson REQUIRED)
 endif                       ()
 message                     ("HENSON_LIBRARY = ${HENSON_LIBRARY}")
-set                         (libraries ${libraries} ${HENSON_LIBRARY})
+message                     ("HENSON_PMPI_LIBRARY = ${HENSON_PMPI_LIBRARY}")
+set                         (libraries ${libraries} ${HENSON_PMPI_LIBRARY} ${HENSON_LIBRARY})
 
 # HDF5
 if                          (HDF5_PATH)

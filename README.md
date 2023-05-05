@@ -46,7 +46,7 @@ git submodule update --init --recursive
 Edit ~climate/E3SM/components/mpas-ocean/Makefile:
 
 Insert at line 596:
-`LIBS += -L $(HENSON)/lib -lhenson`
+`LIBS += -L $(HENSON)/lib -lhenson-pmpi -lhenson`
 
 Insert at line 732:
 `LDFLAGS += -shared`
