@@ -123,6 +123,34 @@ Assumes that `load_dev_compass_1.2.0-alpha.4.sh` is the name of the conda enviro
 source ~/compass-env-only/load_dev_compass_1.2.0-alpha.4.sh
 compass setup -t ocean/baroclinic_channel/10km/default -w ~/spack-baroclinic-test -p ~/climate/E3SM/components/mpas-ocean -f ~/compass-env-only/compass.cfg
 ```
+### First time: set up the initial state using compass and partition the mesh using gpmetis
+
+Assumes that `load_dev_compass_1.2.0-alpha.4.sh` is the name of the conda environment load script created initially
+
+```
+source ~/compass-env-only/load_dev_compass_1.2.0-alpha.4.sh
+source ~/climate/mpas-o-workflow/load-mpas.sh
+cd ~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/initial_state
+compass run
+cd ../forward
+gpmetis graph.info 4
+```
+### First time: edit `namelist.ocean`
+
+Edit `~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/namelist.ocean`.
+
+Change `config_pio_num_iotasks = 1` and `config_pio_stride = 4` in the `&io` section of the file:
+
+```
+&io
+    config_write_output_on_startup = .false.
+    config_pio_num_iotasks = 1
+    config_pio_stride = 4
+/
+```
+
+### First time: edit `streams.ocean`
+
 Set the output file type for the test case:
 
 Edit `~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/streams.ocean`.
@@ -173,18 +201,7 @@ the `streams.ocean` file:
 </stream>
 ```
 
-### Run the test case through compass
-
-Assumes that `load_dev_compass_1.2.0-alpha.4.sh` is the name of the conda environment load script created initially
-
-```
-source ~/compass-env-only/load_dev_compass_1.2.0-alpha.4.sh
-source ~/climate/mpas-o-workflow/load-mpas.sh
-cd ~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default
-compass run
-```
-
-### Run the test case through henson
+### Run the workflow
 
 Assumes that `load_dev_compass_1.2.0-alpha.4.sh` is the name of the conda environment load script created initially
 
