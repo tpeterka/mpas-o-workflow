@@ -41,7 +41,7 @@ cd E3SM
 git submodule update --init --recursive
 ```
 
-## First time: modify MPAS-Ocean makefiles to link to Henson
+### First time: modify MPAS-Ocean makefiles to link to Henson
 
 Edit ~climate/E3SM/components/mpas-ocean/Makefile:
 
@@ -81,6 +81,7 @@ mpas: $(AUTOCLEAN_DEPS) framework dycore drver
     $(LINKER) $(LDFLAGS) -o $(EXE_NAME).so $(FWPATH)/driver/*.o -L$(FWPATH) -Lsrc -ldycore -lops -lframework $(LIBS) -I./external/esmf_time_f90 -L$(FWPATH)/external/esmf_time_f90 -lesmf_time
 ...
 
+```
 
 ### Build MPAS-Ocean
 
