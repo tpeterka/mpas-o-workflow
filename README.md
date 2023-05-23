@@ -45,13 +45,42 @@ git submodule update --init --recursive
 
 Edit ~climate/E3SM/components/mpas-ocean/Makefile:
 
-Insert at line 596:
+Insert at or around line 599:
 `LIBS += -L $(HENSON)/lib -lhenson-pmpi -lhenson`
+Resulting in the following:
 
-Insert at line 732:
-`LDFLAGS += -shared`
+```
+...
+    CPPINCLUDES += -I$(PNETCDF)/include
+    FCINCLUDES += -I$(PNETCDF)/include
+    LIBS += -L$(PNETCDF)/$(PNETCDFLIBLOC) -lpnetcdf
+endif
 
-Edit line 1002 to add .so to executable name: `$(EXE_NAME).so`
+LIBS += -L$(HENSON)/lib -lhenson-pmpi -lhenson
+...
+```
+
+Insert at or around line 754:
+`LDFLAGS += -shared -Wl,-u,henson_set_contexts,-u,henson_set_namemap`
+Resulting in the following:
+
+```
+...
+    CXXFLAGS += $(PICFLAG)
+    LDFLAGS += $(PICFLAG)
+    LDFLAGS += -shared -Wl,-u,henson_set_contexts,-u,henson_set_namemap
+    SHAREDLIB_MESSAGE="Position-independent code was generated."
+...
+```
+
+Edit the line at or around line 1035 to add .so to executable name: `$(EXE_NAME).so`
+Resulting in the following:
+```
+...
+mpas: $(AUTOCLEAN_DEPS) framework dycore drver
+    $(LINKER) $(LDFLAGS) -o $(EXE_NAME).so $(FWPATH)/driver/*.o -L$(FWPATH) -Lsrc -ldycore -lops -lframework $(LIBS) -I./external/esmf_time_f90 -L$(FWPATH)/external/esmf_time_f90 -lesmf_time
+...
+
 
 ### Build MPAS-Ocean
 
@@ -61,16 +90,6 @@ make clean              # if dirty
 make -j gfortran
 ```
 This will take ~ 5 minutes to compile.
-
-### Create a run script for MPAS-Ocean
-
-Edit (create) `~/climate/E3SM/components/mpas-ocean/ocean_model`:
-
-`python3 ~/climate/mpas-o-workflow/mpas-henson.py`
-
-Set permissions of `ocean_model` to executable:
-
-`chmod 755 ~/climate/E3SM/components/mpas-ocean/ocean_model`
 
 -----
 
@@ -203,10 +222,7 @@ the `streams.ocean` file:
 
 ### Run the workflow
 
-Assumes that `load_dev_compass_1.2.0-alpha.4.sh` is the name of the conda environment load script created initially
-
 ```
-source ~/compass-env-only/load_dev_compass_1.2.0-alpha.4.sh
 source ~/climate/mpas-o-workflow/load-mpas.sh
 cd ~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
 mpiexec -n 5 python3 ~/climate/mpas-o-workflow/mpas-henson.py

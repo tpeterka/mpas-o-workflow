@@ -19,6 +19,8 @@ spack env create $SPACKENV $YAML
 echo "activating spack environment"
 spack env activate $SPACKENV
 
+# spack develop lowfive@master
+
 # install everything in environment
 echo "installing dependencies in environment"
 spack install
