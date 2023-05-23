@@ -221,6 +221,15 @@ the `streams.ocean` file:
 </stream>
 ```
 
+### First time: create an empty `output.nc` file
+
+Because of a quirk in the way that the MPAS-Ocean I/O works, there needs to be an `output.nc` file
+on disk, otherwise the program will complain. It doesn't matter what's in the file:
+
+```
+touch ~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/output.nc
+```
+
 ### Run the workflow
 
 ```
