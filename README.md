@@ -159,13 +159,13 @@ gpmetis graph.info 4
 
 Edit `~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/namelist.ocean`.
 
-Change `config_pio_num_iotasks = 1` and `config_pio_stride = 4` in the `&io` section of the file:
+Set `config_pio_num_iotasks = 4` and `config_pio_stride = 1` in the `&io` section of the file:
 
 ```
 &io
     config_write_output_on_startup = .false.
-    config_pio_num_iotasks = 1
-    config_pio_stride = 4
+    config_pio_num_iotasks = 4
+    config_pio_stride = 1
 /
 ```
 

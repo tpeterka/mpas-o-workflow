@@ -9,11 +9,17 @@ from spack import *
 class Lowfive(CMakePackage):
     """HDF5 VOL Plugin for In Situ Data Transport."""
 
-    homepage = "https://github.com/diatomic/LowFive.git"
-    url      = "https://github.com/diatomic/LowFive.git"
-    git      = "https://github.com/diatomic/LowFive.git"
+    # public repo (use this)
+#     homepage = "https://github.com/diatomic/LowFive.git"
+#     url      = "https://github.com/diatomic/LowFive.git"
+#     git      = "https://github.com/diatomic/LowFive.git"
+#     version('master', branch='master')
 
-    version('master', branch='master')
+    # my local repo (for debugging)
+    homepage = "/home/tpeterka/software/LowFive"
+    url      = "/home/tpeterka/software/LowFive"
+    git      = "/home/tpeterka/software/LowFive"
+    version('tom-dev', branch='tom-dev')
 
     variant("examples", default=False, description="Install the examples")
     variant("auto_load", default=True, description="Set LowFive environment variables")
