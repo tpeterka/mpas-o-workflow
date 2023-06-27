@@ -11,7 +11,7 @@ spack:
     - netcdf-c@4.8.1+mpi
     - netcdf-fortran@4.5.3
     - mpas-o-scorpio+hdf5
-    - lowfive@tom-dev
+    - lowfive@master
     - henson+python+mpi-wrappers
 
   view: true

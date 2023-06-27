@@ -120,7 +120,7 @@ Assumes the config file is named ~/compass-env-only/compass.cfg and has these co
 [paths]
 
 # A root directory where MPAS standalone data can be found
-database_root = /home/tpeterka/compass/mpas_standalonedata
+database_root = $HOME/compass/mpas_standalonedata
 
 # The parallel section describes options related to running tests in parallel
 [parallel]
@@ -228,6 +228,30 @@ on disk, otherwise the program will complain. It doesn't matter what's in the fi
 
 ```
 touch ~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/output.nc
+```
+
+### First time: build an example consumer application
+
+```
+source ~/climate/mpas-o-workflow/load-mpas.sh
+cd ~/climate/mpas-o-workflow
+mkdir build
+cd build
+rm CMakeCache.txt                                                           # optional
+
+cmake .. \
+-DCMAKE_INSTALL_PREFIX=$HOME/climate/mpas-o-workflow/install \              # use your own path here
+-DCMAKE_CXX_COMPILER=mpicxx \                                               # use your own compiler here
+-DBUILD_SHARED_LIBS=false \
+-DLOWFIVE_PATH=$LOWFIVE \
+-DSCORPIO_PATH=$PIO \
+-DNETCDF_PATH=$NETCDF \
+-DPNETCDF_PATH=$PNETCDF \
+-DHDF5_PATH=$HDF5 \
+-DHENSON_PATH=$HENSON \
+
+make -j install
+
 ```
 
 ### Run the workflow
