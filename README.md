@@ -83,6 +83,13 @@ mpas: $(AUTOCLEAN_DEPS) framework dycore drver
 
 ```
 
+### First time: modify MPAS-Ocean source code to remove stop command
+
+Edit ~climate/E3SM/components/mpas-framework/src/driver/mpas.F:
+
+Remove or comment out the `stop` command at line 24. Otherwise this will terminate the entire workflow
+prematurely.
+
 ### Build MPAS-Ocean
 
 ```

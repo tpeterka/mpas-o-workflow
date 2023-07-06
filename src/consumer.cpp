@@ -38,6 +38,11 @@ int main(int argc, char* argv[])
     int ioid;
     int varid = -1;
 
+    // set error handling so that scorpio does not catch the error
+    int ret;
+    if ((ret = PIOc_set_iosystem_error_handling(PIO_DEFAULT, PIO_RETURN_ERROR, NULL)))
+        return ret;
+
     // debug
     fmt::print(stderr, "consumer: local comm rank {} size {}\n", my_rank, ntasks);
 
