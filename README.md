@@ -40,12 +40,30 @@ git clone https://github.com/E3SM-Project/E3SM
 cd E3SM
 git submodule update --init --recursive
 ```
+On a new machine, if you are denied permission to execute the `git submodule update --init --recursive` command, you
+need to copy your ssh public key to your github account:
+```
+cd ~/.ssh
+ls
+```
+If a public key doesn't exist:
+```
+ssh-keygen -t ed25519 -C "<your email address>"
+# press enter for all prompts
+```
+Copy the key to the clipboard, log into your account on github.com, edit your settings, and add the SSH key.
+
+Also first time only for a new git configuration, you may want to do:
+```
+git config --global user.email "<your email address>"
+git config --global user.name "<your name>"
+```
 
 ### First time: modify MPAS-Ocean makefiles to link to Henson
 
 Edit ~climate/E3SM/components/mpas-ocean/Makefile:
 
-Insert at or around line 599:
+Insert at or around line 610:
 `LIBS += -L $(HENSON)/lib -lhenson-pmpi -lhenson`
 Resulting in the following:
 
@@ -60,7 +78,7 @@ LIBS += -L$(HENSON)/lib -lhenson-pmpi -lhenson
 ...
 ```
 
-Insert at or around line 754:
+Insert at or around line 765:
 `LDFLAGS += -shared -Wl,-u,henson_set_contexts,-u,henson_set_namemap`
 Resulting in the following:
 
@@ -73,7 +91,7 @@ Resulting in the following:
 ...
 ```
 
-Edit the line at or around line 1035 to add .so to executable name: `$(EXE_NAME).so`
+Edit the line at or around line 1047 to add .so to executable name: `$(EXE_NAME).so`
 Resulting in the following:
 ```
 ...
