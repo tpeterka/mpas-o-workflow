@@ -246,15 +246,6 @@ the `streams.ocean` file:
 </stream>
 ```
 
-### First time: create an empty `output.nc` file
-
-Because of a quirk in the way that the MPAS-Ocean I/O works, there needs to be an `output.nc` file
-on disk, otherwise the program will complain. It doesn't matter what's in the file:
-
-```
-touch ~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/output.nc
-```
-
 ### First time: build an example consumer application
 
 ```
@@ -281,11 +272,21 @@ make -j install
 
 ### Run the workflow
 
+First time: create an `output.nc` file
+
+Because of a quirk in the way that the MPAS-Ocean I/O works, there needs to be an `output.nc` file
+on disk, otherwise the program will complain. Edit line 12 of `~/climate/mpas-o-workflow/mpas-henson.py` to set
+`passthru = True`
+
+Run the workflow.
+
 ```
 source ~/climate/mpas-o-workflow/load-mpas.sh
 cd ~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
-mpiexec -n 5 python3 ~/climate/mpas-o-workflow/mpas-henson.py
+mpiexec -n 6 python3 ~/climate/mpas-o-workflow/mpas-henson.py
 ```
+
+After the first time, you can set `passthru = False` and run again.
 
 
 

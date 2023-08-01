@@ -6,14 +6,15 @@ import lowfive
 from pathlib import Path
 import os
 
-passthru = False
-
 world = MPI.COMM_WORLD.Dup()
 size = world.Get_size()
 
+passthru = False
+consumer_procs = 2 # make sure consumer_procs + MPAS_O procs = size
+
 # pm = h.ProcMap(world, [("producer", size)])
 # pm = h.ProcMap(world, [("consumer", size)])
-pm = h.ProcMap(world, [("producer", size - 1), ("consumer", 1)])
+pm = h.ProcMap(world, [("producer", size - consumer_procs), ("consumer", consumer_procs)])
 
 nm = h.NameMap()
 
