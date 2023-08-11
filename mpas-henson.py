@@ -32,9 +32,9 @@ if pm.group() == "producer":
 #     print("producer world rank", world.rank, "pid", os.getpid())
     prod.proceed()
     if passthru:
-        print("producer before barrier")
+#         print("producer before barrier")
         h.to_mpi4py(pm.intercomm("consumer", tag)).barrier()
-        print("producer after barrier")
+#         print("producer after barrier")
 else:
     tag = 0
 #     lowfive.create_logger("trace")
@@ -48,8 +48,8 @@ else:
     cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/consumer.so", [], pm, nm)
 #     print("consumer world rank", world.rank, "pid", os.getpid())
     if passthru:
-        print("consumer before barrier")
+#         print("consumer before barrier")
         h.to_mpi4py(pm.intercomm("producer", tag)).barrier()
-        print("consumer after barrier")
+#         print("consumer after barrier")
     cons.proceed()
 
