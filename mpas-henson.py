@@ -20,7 +20,7 @@ nm = h.NameMap()
 
 if pm.group() == "producer":
     tag = 0
-#     lowfive.create_logger("trace")
+    lowfive.create_logger("info")
 #     vol = lowfive.create_MetadataVOL()
     vol = lowfive.create_DistMetadataVOL(pm.local(), pm.intercomm("consumer", tag))
     if passthru:
@@ -37,7 +37,7 @@ if pm.group() == "producer":
 #         print("producer after barrier")
 else:
     tag = 0
-#     lowfive.create_logger("trace")
+    lowfive.create_logger("info")
 #     vol = lowfive.create_MetadataVOL()
     vol = lowfive.create_DistMetadataVOL(pm.local(), pm.intercomm("producer", tag))
     if passthru:

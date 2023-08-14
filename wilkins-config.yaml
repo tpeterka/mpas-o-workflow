@@ -1,0 +1,19 @@
+tasks:
+  - func: "/home/tpeterka/climate/E3SM/components/mpas-ocean/ocean_model.so"
+    nprocs: 4
+    args: ["-n", "namelist.ocean", "-s", "streams.ocean"]
+    outports:
+      - filename: "*.nc"
+        dsets:
+          - name: /bottomDepth
+            passthru: 0
+            metadata: 1
+  - func: "/home/tpeterka/climate/mpas-o-workflow/install/bin/consumer.so"
+    nprocs: 2
+    args: ["{filename}"]
+    inports:
+      - filename: "*.nc"
+        dsets:
+          - name: /bottomDepth
+            passthru: 0
+            metadata: 1

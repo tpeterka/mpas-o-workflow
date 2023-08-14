@@ -79,8 +79,8 @@ int main(int argc, char* argv[])
     PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &bottomDepth[0]);
 
     // print the data values
-//     for (int i = 0; i < elements_per_pe; i++)
-//         fmt::print(stderr, "bottomDepth[{}] = {}\n", i, bottomDepth[i]);
+    for (int i = 0; i < elements_per_pe; i++)
+        fmt::print(stderr, "bottomDepth[{}] = {}\n", i, bottomDepth[i]);
 
     PIOc_freedecomp(iosysid, ioid);
 
