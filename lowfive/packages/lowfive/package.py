@@ -13,7 +13,8 @@ class Lowfive(CMakePackage):
     homepage = "https://github.com/diatomic/LowFive.git"
     url      = "https://github.com/diatomic/LowFive.git"
     git      = "https://github.com/diatomic/LowFive.git"
-    version('master', branch='master')
+#     version('master', branch='master')
+    version('master', commit='cfd95d0')
 
     # local repo (for debugging)
 #     homepage = "/home/tpeterka/software/LowFive"

@@ -82,8 +82,6 @@ int main(int argc, char* argv[])
     for (int i = 0; i < elements_per_pe; i++)
         fmt::print(stderr, "bottomDepth[{}] = {}\n", i, bottomDepth[i]);
 
-    PIOc_freedecomp(iosysid, ioid);
-
     // -------- xEdge --------
 
     // decomposition
@@ -111,8 +109,6 @@ int main(int argc, char* argv[])
     // print the data values
 //     for (int i = 0; i < elements_per_pe; i++)
 //         fmt::print(stderr, "xEdge[{}] = {}\n", i, xEdge[i]);
-
-    PIOc_freedecomp(iosysid, ioid);
 
     // -------- yEdge --------
 
@@ -142,8 +138,6 @@ int main(int argc, char* argv[])
 //     for (int i = 0; i < elements_per_pe; i++)
 //         fmt::print(stderr, "yEdge[{}] = {}\n", i, yEdge[i]);
 
-    PIOc_freedecomp(iosysid, ioid);
-
     // -------- zEdge --------
 
     // decomposition
@@ -171,8 +165,6 @@ int main(int argc, char* argv[])
     // print the data values
 //     for (int i = 0; i < elements_per_pe; i++)
 //         fmt::print(stderr, "zEdge[{}] = {}\n", i, zEdge[i]);
-
-    PIOc_freedecomp(iosysid, ioid);
 
     // -------- zTop --------
 
@@ -212,8 +204,6 @@ int main(int argc, char* argv[])
 //             fmt::print(stderr, "time t = {} zTop[{}] = {}\n", t, i, zTop[i]);
     }
 
-    PIOc_freedecomp(iosysid, ioid);
-
     // -------- normalTransportVelocity --------
 
     // decomposition
@@ -251,8 +241,6 @@ int main(int argc, char* argv[])
 //         for (int i = 0; i < elements_per_pe; i++)
 //             fmt::print(stderr, "time t = {} normalTransportVelocity[{}] = {}\n", t, i, normalTransportVelocity[i]);
     }
-
-    PIOc_freedecomp(iosysid, ioid);
 
     // -------- vertTransportVelocityTop --------
 
@@ -292,10 +280,9 @@ int main(int argc, char* argv[])
 //             fmt::print(stderr, "time t = {} vertTransportVelocityTop[{}] = {}\n", t, i, vertTransportVelocityTop[i]);
     }
 
-    PIOc_freedecomp(iosysid, ioid);
-
     // clean up
     PIOc_closefile(ncid);
+    PIOc_freedecomp(iosysid, ioid);
     PIOc_finalize(iosysid);
 
     // debug
