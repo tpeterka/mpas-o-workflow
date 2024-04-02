@@ -25,9 +25,7 @@ spack env activate $SPACKENV
 
 # add netcdf in develop mode
 # spack develop netcdf-c@4.8.1+mpi
-spack add netcdf-c@4.8.1+mpi cflags='-g'
-# spack develop netcdf-c@4.8.1+mpi
-# spack add netcdf-c@4.8.1+mpi
+# spack add netcdf-c@4.8.1+mpi cflags='-g'
 
 # install everything in environment
 echo "installing dependencies in environment"
