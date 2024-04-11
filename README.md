@@ -78,7 +78,7 @@ LIBS += -L$(HENSON)/lib -lhenson-pmpi -lhenson
 ...
 ```
 
-Insert at or around line 765:
+Insert at or around line 773:
 `LDFLAGS += -shared -Wl,-u,henson_set_contexts,-u,henson_set_namemap`
 Resulting in the following:
 
@@ -91,7 +91,7 @@ Resulting in the following:
 ...
 ```
 
-Edit the line at or around line 1047 to add .so to executable name: `$(EXE_NAME).so`
+Edit the line at or around line 1060 to add .so to executable name: `$(EXE_NAME).so`
 Resulting in the following:
 ```
 ...
@@ -103,9 +103,9 @@ mpas: $(AUTOCLEAN_DEPS) framework dycore drver
 
 ### First time: modify MPAS-Ocean source code to remove stop command
 
-Edit ~climate/E3SM/components/mpas-framework/src/driver/mpas.F:
+Edit ~/climate/E3SM/components/mpas-framework/src/driver/mpas.F:
 
-Remove or comment out the `stop` command at line 24. Otherwise this will terminate the entire workflow
+Remove or comment out the `stop` command at or around line 23. Otherwise this will terminate the entire workflow
 prematurely.
 
 ### Build MPAS-Ocean
@@ -131,7 +131,7 @@ git clone https://github.com/MPAS-Dev/compass.git compass-env-only
 cd ~/compass-env-only
 git submodule update --init --recursive
 ./conda/configure_compass_env.py --conda ~/miniconda3 --env_only
-source load_dev_compass_1.2.0-alpha.4.sh        # load_dev_compass-1.2.0-alpha.4.sh is the script created by the previous command
+source load_dev_compass_1.3.0-alpha.2.sh        # assumes load_dev_compass-1.3.0-alpha.2.sh is the script created by the previous command
 ```
 
 ### First time: create a compass configuration file for a new machine
@@ -162,27 +162,26 @@ parallel_executable = mpiexec
 
 ### First time: create test case for the executable
 
-Assumes that `load_dev_compass_1.2.0-alpha.4.sh` is the name of the conda environment load script created initially
+Assumes that `load_dev_compass_1.3.0-alpha.2.sh` is the name of the conda environment load script created initially
 
 ```
-source ~/compass-env-only/load_dev_compass_1.2.0-alpha.4.sh
-compass setup -t ocean/baroclinic_channel/10km/default -w ~/spack-baroclinic-test -p ~/climate/E3SM/components/mpas-ocean -f ~/compass-env-only/compass.cfg
+source ~/compass-env-only/load_dev_compass_1.3.0-alpha.2.sh
+compass setup -t ocean/baroclinic_channel/10km/default -w ~/compass-baroclinic-test -p ~/climate/E3SM/components/mpas-ocean -f ~/compass-env-only/compass.cfg
 ```
 ### First time: set up the initial state using compass and partition the mesh using gpmetis
 
-Assumes that `load_dev_compass_1.2.0-alpha.4.sh` is the name of the conda environment load script created initially
+Assumes that `load_dev_compass_1.3.0-alpha.2.sh` is the name of the conda environment load script created initially
 
 ```
-source ~/compass-env-only/load_dev_compass_1.2.0-alpha.4.sh
-source ~/climate/mpas-o-workflow/load-mpas.sh
-cd ~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/initial_state
+source ~/compass-env-only/load_dev_compass_1.3.0-alpha.2.sh
+cd ~/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/initial_state
 compass run
 cd ../forward
 gpmetis graph.info 4
 ```
 ### First time: edit `namelist.ocean`
 
-Edit `~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/namelist.ocean`.
+Edit `~/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/namelist.ocean`.
 
 Set `config_pio_num_iotasks = 4` and `config_pio_stride = 1` in the `&io` section of the file:
 
@@ -198,7 +197,7 @@ Set `config_pio_num_iotasks = 4` and `config_pio_stride = 1` in the `&io` sectio
 
 Set the output file type for the test case:
 
-Edit `~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/streams.ocean`.
+Edit `~/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/streams.ocean`.
 
 Add `io_type="netcdf4">` to the `<stream name="output"` section of the file:
 
@@ -282,7 +281,7 @@ Run the workflow.
 
 ```
 source ~/climate/mpas-o-workflow/load-mpas.sh
-cd ~/spack-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
+cd ~/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
 mpiexec -n 6 python3 ~/climate/mpas-o-workflow/mpas-henson.py
 ```
 
