@@ -3,6 +3,8 @@
 export SPACKENV=mpas
 export YAML=$PWD/env.yaml
 
+spack env deactivate > /dev/null 2>&1
+
 # add mpas-o-scorpio and lowfive and wilkins spack repos
 echo "adding custom spack repo for scorpio"
 spack repo add mpas-o-scorpio > /dev/null 2>&1
@@ -21,7 +23,8 @@ spack env create $SPACKENV $YAML
 echo "activating spack environment"
 spack env activate $SPACKENV
 
-# spack develop lowfive@master
+# spack develop lowfive@master build_type=Debug
+# spack add lowfive
 
 # add netcdf in develop mode
 # spack develop netcdf-c@4.8.1+mpi

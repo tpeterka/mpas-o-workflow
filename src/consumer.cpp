@@ -107,8 +107,8 @@ int main(int argc, char* argv[])
     PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &xEdge[0]);
 
     // print the data values
-//     for (int i = 0; i < elements_per_pe; i++)
-//         fmt::print(stderr, "xEdge[{}] = {}\n", i, xEdge[i]);
+    for (int i = 0; i < elements_per_pe; i++)
+        fmt::print(stderr, "xEdge[{}] = {}\n", i, xEdge[i]);
 
     // -------- yEdge --------
 
@@ -135,8 +135,8 @@ int main(int argc, char* argv[])
     PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &yEdge[0]);
 
     // print the data values
-//     for (int i = 0; i < elements_per_pe; i++)
-//         fmt::print(stderr, "yEdge[{}] = {}\n", i, yEdge[i]);
+    for (int i = 0; i < elements_per_pe; i++)
+        fmt::print(stderr, "yEdge[{}] = {}\n", i, yEdge[i]);
 
     // -------- zEdge --------
 
@@ -163,8 +163,8 @@ int main(int argc, char* argv[])
     PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &zEdge[0]);
 
     // print the data values
-//     for (int i = 0; i < elements_per_pe; i++)
-//         fmt::print(stderr, "zEdge[{}] = {}\n", i, zEdge[i]);
+    for (int i = 0; i < elements_per_pe; i++)
+        fmt::print(stderr, "zEdge[{}] = {}\n", i, zEdge[i]);
 
     // -------- zTop --------
 
@@ -196,12 +196,12 @@ int main(int argc, char* argv[])
     for (auto t = 0; t < dim_len[0]; t++)      // for all timesteps
     {
         // memory mode crashes with invalid dimension ID, unable to query dimension 1
-//         PIOc_setframe(ncid, varid, t);
-//         PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &zTop[0]);
+        PIOc_setframe(ncid, varid, t);
+        PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &zTop[0]);
 
         // print the data values
-//         for (int i = 0; i < elements_per_pe; i++)
-//             fmt::print(stderr, "time t = {} zTop[{}] = {}\n", t, i, zTop[i]);
+        for (int i = 0; i < elements_per_pe; i++)
+            fmt::print(stderr, "time t = {} zTop[{}] = {}\n", t, i, zTop[i]);
     }
 
     // -------- normalTransportVelocity --------
