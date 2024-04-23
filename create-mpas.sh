@@ -30,6 +30,10 @@ spack env activate $SPACKENV
 # spack develop netcdf-c@4.8.1+mpi
 # spack add netcdf-c@4.8.1+mpi cflags='-g'
 
+# add scorpio in develop mode
+spack develop mpas-o-scorpio@master+hdf5 build_type=Debug
+spack add mpas-o-scorpio
+
 # install everything in environment
 echo "installing dependencies in environment"
 spack install
