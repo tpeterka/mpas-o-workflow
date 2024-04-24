@@ -27,6 +27,7 @@ echo "environment variables are set for building MPAS-Ocean"
 
 # set LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$NETCDF/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$PNETCDF/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$NETCDFF/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$HDF5/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$PIO/lib:$LD_LIBRARY_PATH
