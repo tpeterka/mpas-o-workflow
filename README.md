@@ -8,10 +8,10 @@ Installation is done through Spack. If you don't have Spack installed or if Spac
 
 These instructions assume there is a top-level directory called climate.
 
+```
 mkdir ~/climate
 cd ~/climate
 git clone https://github.com/tpeterka/mpas-o-workflow
-
 ```
 
 -----
@@ -28,13 +28,11 @@ Wilkins
 ```
 git clone https://github.com/orcunyildiz/wilkins
 spack repo add wilkins
-
 ```
 
 Mpas-o-scorpio
 ```
 spack repo add ~/climate/mpas-o-workflow/mpas-o-scorpio
-
 ```
 
 -----
@@ -85,54 +83,12 @@ git config --global user.email "<your email address>"
 git config --global user.name "<your name>"
 ```
 
-### First time: modify MPAS-Ocean makefiles to link to Henson
-
-Edit ~climate/E3SM/components/mpas-ocean/Makefile:
-
-Insert at or around line 610:
-`LIBS += -L $(HENSON)/lib -lhenson-pmpi -lhenson`
-Resulting in the following:
+### First time: patch MPAS-Ocean
 
 ```
-...
-    CPPINCLUDES += -I$(PNETCDF)/include
-    FCINCLUDES += -I$(PNETCDF)/include
-    LIBS += -L$(PNETCDF)/$(PNETCDFLIBLOC) -lpnetcdf
-endif
-
-LIBS += -L$(HENSON)/lib -lhenson-pmpi -lhenson
-...
+cd ~/climate/E3SM
+git apply ~/climate/mpas-o-workflow/E3SM.patch
 ```
-
-Insert at or around line 773:
-`LDFLAGS += -shared -Wl,-u,henson_set_contexts,-u,henson_set_namemap`
-Resulting in the following:
-
-```
-...
-    CXXFLAGS += $(PICFLAG)
-    LDFLAGS += $(PICFLAG)
-    LDFLAGS += -shared -Wl,-u,henson_set_contexts,-u,henson_set_namemap
-    SHAREDLIB_MESSAGE="Position-independent code was generated."
-...
-```
-
-Edit the line at or around line 1060 to add .so to executable name: `$(EXE_NAME).so`
-Resulting in the following:
-```
-...
-mpas: $(AUTOCLEAN_DEPS) framework dycore drver
-    $(LINKER) $(LDFLAGS) -o $(EXE_NAME).so $(FWPATH)/driver/*.o -L$(FWPATH) -Lsrc -ldycore -lops -lframework $(LIBS) -I./external/esmf_time_f90 -L$(FWPATH)/external/esmf_time_f90 -lesmf_time
-...
-
-```
-
-### First time: modify MPAS-Ocean source code to remove stop command
-
-Edit ~/climate/E3SM/components/mpas-framework/src/driver/mpas.F:
-
-Remove or comment out the `stop` command at or around line 23. Otherwise this will terminate the entire workflow
-prematurely.
 
 ### Build MPAS-Ocean
 
@@ -186,7 +142,7 @@ parallel_executable = mpiexec
 # cores_per_node = 4
 ```
 
-### First time: create test case for the executable
+### First time: create a test case for the executable
 
 Assumes that `load_dev_compass_1.3.0-alpha.2.sh` is the name of the conda environment load script created initially
 
