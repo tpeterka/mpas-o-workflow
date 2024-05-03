@@ -21,22 +21,19 @@ git clone https://github.com/tpeterka/mpas-o-workflow
 LowFive
 ```
 git clone https://github.com/diatomic/LowFive
-cd LowFive
-spack repo add lowfive
+spack repo add Lowfive
 ```
 
 Wilkins
 ```
 git clone https://github.com/orcunyildiz/wilkins
-cd wilkins
 spack repo add wilkins
 
 ```
 
 Mpas-o-scorpio
 ```
-cd ~/climate/mpas-o-workflow
-spack repo add mpas-o-scorpio
+spack repo add ~/climate/mpas-o-workflow/mpas-o-scorpio
 
 ```
 
