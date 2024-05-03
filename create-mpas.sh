@@ -3,16 +3,6 @@
 export SPACKENV=mpas
 export YAML=$PWD/env.yaml
 
-spack env deactivate > /dev/null 2>&1
-
-# add mpas-o-scorpio and lowfive and wilkins spack repos
-echo "adding custom spack repo for scorpio"
-spack repo add mpas-o-scorpio > /dev/null 2>&1
-echo "adding spack repo for lowfive"
-spack repo add lowfive > /dev/null 2>&1
-echo "adding spack repo for wilkins"
-spack repo add wilkins > /dev/null 2>&1
-
 # create spack environment
 echo "creating spack environment $SPACKENV"
 spack env deactivate > /dev/null 2>&1
@@ -24,15 +14,21 @@ echo "activating spack environment"
 spack env activate $SPACKENV
 
 # spack develop lowfive@master build_type=Debug
-# spack add lowfive
+spack add lowfive
 
-# add netcdf in develop mode
-# spack develop netcdf-c@4.8.1+mpi
-# spack add netcdf-c@4.8.1+mpi cflags='-g'
+# spack develop netcdf-c@4.9+mpi
+# spack add netcdf-c@4.9+mpi cflags='-g'
+ spack add netcdf-c@4.9+mpi
 
 # add scorpio in develop mode
 spack develop mpas-o-scorpio@master+hdf5 build_type=Debug
 spack add mpas-o-scorpio
+
+# the following is for particle tracing with ftk; comment out if not needed
+spack add cuda
+spack add vtk@9.2.2
+spack add ndarray+hdf5+netcdf+mpi+cuda+vtk
+spack add ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
 
 # install everything in environment
 echo "installing dependencies in environment"
@@ -60,14 +56,6 @@ export MPAS_SHELL=/bin/bash
 export CORE=ocean
 export SHAREDLIB=true
 export PROFILE_PRELIB="-L$HENSON/lib -lhenson-pmpi"
-
-# clone and build MPAS-O
-# echo "cloning and building MPAS-Ocean"
-# git clone https://github.com/E3SM-Project/E3SM
-# cd E3SM
-# git submodule update --init --recursive
-# cd components/mpas-ocean
-# make gfortran
 
 # set LD_LIBRARY_PATH
 echo "setting flags for running MPAS-Ocean"

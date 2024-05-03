@@ -2,13 +2,42 @@
 
 Installation is done through Spack. If you don't have Spack installed or if Spack is new to you, go [here](https://spack.readthedocs.io/en/latest/) first.
 
-Clone this repository and cd into it. These instructions assume there is a top-level directory called climate.
+-----
 
-```
+## Clone this repository
+
+These instructions assume there is a top-level directory called climate.
+
 mkdir ~/climate
 cd ~/climate
 git clone https://github.com/tpeterka/mpas-o-workflow
-cd mpas-o-workflow
+
+```
+
+-----
+
+## First time: Add the following Spack repositories to your local Spack installation
+
+LowFive
+```
+git clone https://github.com/diatomic/LowFive
+cd LowFive
+spack repo add lowfive
+```
+
+Wilkins
+```
+git clone https://github.com/orcunyildiz/wilkins
+cd wilkins
+spack repo add wilkins
+
+```
+
+Mpas-o-scorpio
+```
+cd ~/climate/mpas-o-workflow
+spack repo add mpas-o-scorpio
+
 ```
 
 -----
