@@ -35,9 +35,27 @@ Mpas-o-scorpio
 spack repo add ~/climate/mpas-o-workflow/mpas-o-scorpio
 ```
 
+Optional: Particle tracing
+```
+git clone https://github.com/hguo/spack-mpas-o
+spack repo add spack-mpas-o
+```
+
 -----
 
 ## Setting up Spack environment
+
+### First time: optional, uncomment particle tracing dependencies in create script:
+
+Edit ~/climate/mpas-o-workflow/create-env.sh
+Around line 29, uncomment 4 lines that add dependencies for cuda, vtk, ndarray, and ftk
+
+```
+spack add cuda
+spack add vtk@9.2.2
+spack add ndarray+hdf5+netcdf+mpi+cuda+vtk
+spack add ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
+```
 
 ### First time: create and load the Spack environment for MPAS-Ocean
 
