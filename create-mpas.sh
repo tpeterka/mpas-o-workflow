@@ -29,6 +29,7 @@ spack add mpas-o-scorpio+hdf5
 # spack add cuda
 # spack add vtk@9.2.2
 # spack add ndarray+hdf5+netcdf+mpi+cuda+vtk
+# spack develop ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
 # spack add ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
 
 # install everything in environment
