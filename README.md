@@ -129,8 +129,8 @@ spack env deactivate
 git clone https://github.com/MPAS-Dev/compass.git compass-env-only
 cd /path_to/compass-env-only
 git submodule update --init --recursive
-./conda/configure_compass_env.py --conda ~/miniconda3 --env_only
-source load_dev_compass_1.3.0-alpha.2.sh        # assumes load_dev_compass-1.3.0-alpha.2.sh is the script created by the previous command
+./conda/configure_compass_env.py --conda /path_to/miniconda3 --env_only
+source load_dev_compass_1.4.0-alpha.2.sh        # assumes load_dev_compass_1.4.0-alpha.2.sh is the script created by the previous command
 ```
 
 ### First time: create a compass configuration file for a new machine
@@ -161,18 +161,18 @@ parallel_executable = mpiexec
 
 ### First time: create a test case for the executable
 
-Assumes that `load_dev_compass_1.3.0-alpha.2.sh` is the name of the conda environment load script created initially
+Assumes that `load_dev_compass_1.4.0-alpha.2.sh` is the name of the conda environment load script created initially
 
 ```
-source /path_to/compass-env-only/load_dev_compass_1.3.0-alpha.2.sh
+source /path_to/compass-env-only/load_dev_compass_1.4.0-alpha.2.sh
 compass setup -t ocean/baroclinic_channel/10km/default -w /path_to/compass-baroclinic-test -p /path_to/E3SM/components/mpas-ocean -f /path_to/compass-env-only/compass.cfg
 ```
 ### First time: set up the initial state using compass and partition the mesh using gpmetis
 
-Assumes that `load_dev_compass_1.3.0-alpha.2.sh` is the name of the conda environment load script created initially
+Assumes that `load_dev_compass_1.4.0-alpha.2.sh` is the name of the conda environment load script created initially
 
 ```
-source /path_to/compass-env-only/load_dev_compass_1.3.0-alpha.2.sh
+source /path_to/compass-env-only/load_dev_compass_1.4.0-alpha.2.sh
 cd /path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/initial_state
 compass run
 cd ../forward
