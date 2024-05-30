@@ -40,7 +40,8 @@ else:
     else:
         vol.set_memory("*", "*")
     vol.set_intercomm("*", "*", 0)
-    cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/ftk_shared.so", ["-f", "mpas-o-pt", "--input", "/nfs/gce/projects/PEDAL-GCE/hguo/data/20210421_sim7_CORE_60to30E2r2/mpas.yaml", "--output", "mpas.vtp", "--ptgeo-seeds", "101,49,50,101,-48,-47,1,-1400,-1400", "--ptgeo-checkpoint-days", "1", "--timesteps", "4", "--geo", "--accelerator", "cuda"], pm, nm)
+#     cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/ftk_shared.so", ["-f", "mpas-o-pt", "--input", "/nfs/gce/projects/PEDAL-GCE/hguo/data/20210421_sim7_CORE_60to30E2r2/mpas.yaml", "--output", "mpas.vtp", "--ptgeo-seeds", "101,49,50,101,-48,-47,1,-1400,-1400", "--ptgeo-checkpoint-days", "1", "--timesteps", "4", "--geo", "--accelerator", "cuda"], pm, nm)
+    cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/ftk_shared.so", ["-f", "mpas-o-pt", "--input", "./mpas.yaml", "--output", "mpas.vtp", "--ptgeo-seeds", "101,49,50,101,-48,-47,1,-1400,-1400", "--ptgeo-checkpoint-days", "1", "--timesteps", "3", "--geo", "--accelerator", "cuda"], pm, nm)
     if passthru:
         h.to_mpi4py(pm.intercomm("producer", tag)).barrier()
     cons.proceed()

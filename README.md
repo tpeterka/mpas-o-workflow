@@ -218,7 +218,7 @@ Add `io_type="netcdf4">` to the `<stream name="output"` section of the file:
 </stream>
 ```
 
-If you want to use the output for particle tracing, append additional stream `mesh` and additional variables `ssh`, `normalTransportVelocity`, `vertTransportVelocityTop`, and `zTop` to the `stream name="output"` section of
+If you want to use the output for particle tracing, append additional stream `mesh` and additional variables `ssh`, `normalTransportVelocity`, `vertTransportVelocityTop`, `zTop`, `vertVelocityTop`, and `zMid`  to the `stream name="output"` section of
 the `streams.ocean` file:
 
 ```
@@ -241,6 +241,8 @@ the `streams.ocean` file:
     <var name="normalTransportVelocity"/>
     <var name="vertTransportVelocityTop"/>
     <var name="zTop"/>
+    <var name="vertVelocityTop"/>
+    <var name="zMid"/>
 </stream>
 ```
 
