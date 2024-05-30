@@ -6,11 +6,7 @@ Installation is done through Spack. If you don't have Spack installed or if Spac
 
 ## Clone this repository
 
-These instructions assume there is a top-level directory called climate.
-
 ```
-mkdir ~/climate
-cd ~/climate
 git clone https://github.com/tpeterka/mpas-o-workflow
 ```
 
@@ -21,7 +17,7 @@ git clone https://github.com/tpeterka/mpas-o-workflow
 LowFive
 ```
 git clone https://github.com/diatomic/LowFive
-spack repo add Lowfive
+spack repo add LowFive
 ```
 
 Wilkins
@@ -32,7 +28,7 @@ spack repo add wilkins
 
 Mpas-o-scorpio
 ```
-spack repo add ~/climate/mpas-o-workflow/mpas-o-scorpio
+spack repo add /path_to/mpas-o-workflow/mpas-o-scorpio
 ```
 
 Optional: Particle tracing
@@ -47,7 +43,7 @@ spack repo add spack-mpas-o
 
 ### First time: optional, uncomment particle tracing dependencies in create script:
 
-Edit ~/climate/mpas-o-workflow/create-env.sh
+Edit /path_to/mpas-o-workflow/create-mpas.sh
 Around line 29, uncomment 4 lines that add dependencies for cuda, vtk, ndarray, and ftk
 
 ```
@@ -60,14 +56,14 @@ spack add ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
 ### First time: create and load the Spack environment for MPAS-Ocean
 
 ```
-cd ~/climate/mpas-o-workflow
+cd /path_to/mpas-o-workflow
 source ./create-mpas.sh     # requires being in the same directory to work properly
 ```
 
 ### Subsequent times: load the Spack environment for MPAS-Ocean
 
 ```
-source ~/climate/mpas-o-workflow/load-mpas.sh
+source /path_to/mpas-o-workflow/load-mpas.sh
 ```
 
 -----
@@ -77,7 +73,6 @@ source ~/climate/mpas-o-workflow/load-mpas.sh
 ### First time: clone MPAS-Ocean
 
 ```
-cd ~/climate
 git clone https://github.com/E3SM-Project/E3SM
 cd E3SM
 git submodule update --init --recursive
@@ -104,14 +99,14 @@ git config --global user.name "<your name>"
 ### First time: patch MPAS-Ocean
 
 ```
-cd ~/climate/E3SM
-git apply ~/climate/mpas-o-workflow/E3SM.patch
+cd /path_to/E3SM
+git apply /path_to/mpas-o-workflow/E3SM.patch
 ```
 
 ### Build MPAS-Ocean
 
 ```
-cd ~/climate/E3SM/components/mpas-ocean
+cd /path_to/E3SM/components/mpas-ocean
 make clean              # if dirty
 make -j gfortran
 ```
@@ -125,10 +120,14 @@ Compass is an E3SM system for generating and running test cases for MPAS-Ocean, 
 
 ### First time: install Compass and create Compass environment
 
+You should not have a spack environment active for compass.
 ```
-cd ~
+spack env deactivate
+```
+
+```
 git clone https://github.com/MPAS-Dev/compass.git compass-env-only
-cd ~/compass-env-only
+cd /path_to/compass-env-only
 git submodule update --init --recursive
 ./conda/configure_compass_env.py --conda ~/miniconda3 --env_only
 source load_dev_compass_1.3.0-alpha.2.sh        # assumes load_dev_compass-1.3.0-alpha.2.sh is the script created by the previous command
@@ -136,7 +135,7 @@ source load_dev_compass_1.3.0-alpha.2.sh        # assumes load_dev_compass-1.3.0
 
 ### First time: create a compass configuration file for a new machine
 
-Assumes the config file is named ~/compass-env-only/compass.cfg and has these contents, or similar (yours may vary)
+Assumes the config file is named /path_to/compass-env-only/compass.cfg and has these contents, or similar (yours may vary)
 
 ```
 # This file contains some common config options you might want to set
@@ -165,23 +164,23 @@ parallel_executable = mpiexec
 Assumes that `load_dev_compass_1.3.0-alpha.2.sh` is the name of the conda environment load script created initially
 
 ```
-source ~/compass-env-only/load_dev_compass_1.3.0-alpha.2.sh
-compass setup -t ocean/baroclinic_channel/10km/default -w ~/compass-baroclinic-test -p ~/climate/E3SM/components/mpas-ocean -f ~/compass-env-only/compass.cfg
+source /path_to/compass-env-only/load_dev_compass_1.3.0-alpha.2.sh
+compass setup -t ocean/baroclinic_channel/10km/default -w /path_to/compass-baroclinic-test -p /path_to/E3SM/components/mpas-ocean -f /path_to/compass-env-only/compass.cfg
 ```
 ### First time: set up the initial state using compass and partition the mesh using gpmetis
 
 Assumes that `load_dev_compass_1.3.0-alpha.2.sh` is the name of the conda environment load script created initially
 
 ```
-source ~/compass-env-only/load_dev_compass_1.3.0-alpha.2.sh
-cd ~/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/initial_state
+source /path_to/compass-env-only/load_dev_compass_1.3.0-alpha.2.sh
+cd /path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/initial_state
 compass run
 cd ../forward
 gpmetis graph.info 4
 ```
 ### First time: edit `namelist.ocean`
 
-Edit `~/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/namelist.ocean`.
+Edit `/path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/namelist.ocean`.
 
 Set `config_pio_num_iotasks = 4` and `config_pio_stride = 1` in the `&io` section of the file:
 
@@ -197,7 +196,7 @@ Set `config_pio_num_iotasks = 4` and `config_pio_stride = 1` in the `&io` sectio
 
 Set the output file type for the test case:
 
-Edit `~/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/streams.ocean`.
+Edit `/path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/streams.ocean`.
 
 Add `io_type="netcdf4">` to the `<stream name="output"` section of the file:
 
@@ -250,8 +249,8 @@ the `streams.ocean` file:
 ### First time: build an example consumer application
 
 ```
-source ~/climate/mpas-o-workflow/load-mpas.sh
-cd ~/climate/mpas-o-workflow
+source /path_to/mpas-o-workflow/load-mpas.sh
+cd /path_to/mpas-o-workflow
 mkdir build
 cd build
 rm CMakeCache.txt                                                           # optional
@@ -282,8 +281,8 @@ on disk, otherwise the program will complain. Edit line 12 of `~/climate/mpas-o-
 Run the workflow.
 
 ```
-source ~/climate/mpas-o-workflow/load-mpas.sh
-cd ~/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
+source /path_to/mpas-o-workflow/load-mpas.sh
+cd /path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
 mpiexec -n 6 python3 ~/climate/mpas-o-workflow/mpas-henson.py
 ```
 
