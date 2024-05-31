@@ -26,6 +26,7 @@ if pm.group() == "producer":
         vol.set_passthru("*", "*")
     else:
         vol.set_memory("*", "*")
+    # set the following path to point to your installation of E3SM
     prod = h.Puppet(str(Path.home()) + "/climate/E3SM/components/mpas-ocean/ocean_model.so", ["-n",
     "namelist.ocean", "-s", "streams.ocean"], pm, nm)
     prod.proceed()
@@ -40,8 +41,14 @@ else:
     else:
         vol.set_memory("*", "*")
     vol.set_intercomm("*", "*", 0)
-#     cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/ftk_shared.so", ["-f", "mpas-o-pt", "--input", "/nfs/gce/projects/PEDAL-GCE/hguo/data/20210421_sim7_CORE_60to30E2r2/mpas.yaml", "--output", "mpas.vtp", "--ptgeo-seeds", "101,49,50,101,-48,-47,1,-1400,-1400", "--ptgeo-checkpoint-days", "1", "--timesteps", "4", "--geo", "--accelerator", "cuda"], pm, nm)
-    cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/ftk_shared.so", ["-f", "mpas-o-pt", "--input", "./mpas.yaml", "--output", "mpas.vtp", "--ptgeo-seeds", "101,49,50,101,-48,-47,1,-1400,-1400", "--ptgeo-checkpoint-days", "1", "--timesteps", "3", "--geo", "--accelerator", "cuda"], pm, nm)
+    # set the following path to point to your installation of mpas-o-workflow
+#     cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/ftk_shared.so",
+#             ["-f", "mpas-o-pt", "--input", "/nfs/gce/projects/PEDAL-GCE/hguo/data/20210421_sim7_CORE_60to30E2r2/mpas.yaml",
+#             "--output", "mpas.vtp", "--ptgeo-seeds", "101,49,50,101,-48,-47,1,-1400,-1400", "--ptgeo-checkpoint-days", "1",
+#             "--timesteps", "4", "--geo", "--accelerator", "cuda"], pm, nm)
+    cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/ftk_shared.so",
+    ["-f", "mpas-o-pt", "--input", "./mpas.yaml", "--output", "mpas.vtp", "--ptgeo-seeds",
+    "1,0,0,1,0,0,1,0,0", "--ptgeo-checkpoint-days", "1", "--timesteps", "3", "--geo", "--accelerator", "cuda"], pm, nm)
     if passthru:
         h.to_mpi4py(pm.intercomm("producer", tag)).barrier()
     cons.proceed()

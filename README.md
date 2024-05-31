@@ -301,6 +301,9 @@ Because of a quirk in the way that the MPAS-Ocean I/O works, there needs to be a
 on disk, otherwise the program will complain. Edit line 12 of `~/climate/mpas-o-workflow/mpas-henson.py` to set
 `passthru = True`
 
+In `/path_to/mpas-o-workflow/mpas-henson.py`, set the paths at lines 30 and 45 to point to your
+installation locations.
+
 Run the workflow as follows.
 
 ```

@@ -26,11 +26,11 @@ spack add netcdf-c@4.9+mpi
 spack add mpas-o-scorpio+hdf5
 
 # the following is for particle tracing with ftk; comment out if not needed
-# spack add cuda
-# spack add vtk@9.2.2
-# spack add ndarray+hdf5+netcdf+mpi+cuda+vtk
-# spack develop ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
-# spack add ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
+spack add cuda
+spack add vtk@9.2.2
+spack add ndarray+hdf5+netcdf+mpi+cuda+vtk
+spack develop ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
+spack add ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
 
 # install everything in environment
 echo "installing dependencies in environment"

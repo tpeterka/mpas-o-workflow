@@ -26,7 +26,8 @@ if pm.group() == "producer":
         vol.set_passthru("*", "*")
     else:
         vol.set_memory("*", "*")
-    prod = h.Puppet(str(Path.home()) + "/software/E3SM/components/mpas-ocean/ocean_model.so", ["-n",
+    # set the following path to point to your installation of E3SM
+    prod = h.Puppet(str(Path.home()) + "/climate/E3SM/components/mpas-ocean/ocean_model.so", ["-n",
     "namelist.ocean", "-s", "streams.ocean"], pm, nm)
     prod.proceed()
     if passthru:
@@ -40,7 +41,8 @@ else:
     else:
         vol.set_memory("*", "*")
     vol.set_intercomm("*", "*", 0)
-    cons = h.Puppet(str(Path.home()) + "/software/mpas-o-workflow/install/bin/consumer.so", [], pm, nm)
+    # set the following path to point to your installation of mpas-o-workflow
+    cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/consumer.so", [], pm, nm)
     if passthru:
         h.to_mpi4py(pm.intercomm("producer", tag)).barrier()
     cons.proceed()
