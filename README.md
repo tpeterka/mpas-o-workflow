@@ -116,7 +116,21 @@ This will take ~ 5 minutes to compile.
 
 ## Setting up a test case to execute
 
-Compass is an E3SM system for generating and running test cases for MPAS-Ocean, and relies on conda environments. The instructions below assume you have conda or miniconda already installed. If not, go [here](https://docs.conda.io/en/latest/miniconda.html) first.
+Compass is an E3SM system for generating and running test cases for MPAS-Ocean, and relies on conda environments.
+If you don't have conda, install miniconda [here](https://docs.conda.io/en/latest/miniconda.html) as follows.
+
+```
+mkdir /path_to/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /path_to/miniconda3/miniconda.sh
+bash /path_to/miniconda3/miniconda.sh -b -u -p /path_to/miniconda3
+rm -rf /path_to/miniconda3/miniconda.sh
+/path_to/miniconda3/bin/conda init bash
+```
+
+The last step above will add a few lines to the end of your `.bashrc`. After
+installing Compass and creating a Compass environment in the next section, you
+my comment out those lines in `.bashrc`. Otherwise you will always be in a
+conda environment when you log in.
 
 ### First time: install Compass and create Compass environment
 
@@ -144,7 +158,8 @@ Assumes the config file is named /path_to/compass-env-only/compass.cfg and has t
 [paths]
 
 # A root directory where MPAS standalone data can be found
-database_root = $HOME/compass/mpas_standalonedata
+# You can put any path you wish here
+database_root = /path_to/mpas_standalonedata
 
 # The parallel section describes options related to running tests in parallel
 [parallel]
@@ -162,11 +177,13 @@ parallel_executable = mpiexec
 ### First time: create a test case for the executable
 
 Assumes that `load_dev_compass_1.4.0-alpha.2.sh` is the name of the conda environment load script created initially
+Set `/path_to/compass-baroclinic-test` below where you want the test case to be created.
 
 ```
 source /path_to/compass-env-only/load_dev_compass_1.4.0-alpha.2.sh
 compass setup -t ocean/baroclinic_channel/10km/default -w /path_to/compass-baroclinic-test -p /path_to/E3SM/components/mpas-ocean -f /path_to/compass-env-only/compass.cfg
 ```
+
 ### First time: set up the initial state using compass and partition the mesh using gpmetis
 
 Assumes that `load_dev_compass_1.4.0-alpha.2.sh` is the name of the conda environment load script created initially
@@ -178,6 +195,7 @@ compass run
 cd ../forward
 gpmetis graph.info 4
 ```
+
 ### First time: edit `namelist.ocean`
 
 Edit `/path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/namelist.ocean`.
@@ -248,6 +266,9 @@ the `streams.ocean` file:
 
 ### First time: build an example consumer application
 
+You will use the spack environment you created earlier. You should not have a conda Compass environment active at this time.
+The easiest way to deactivate conda and Compass is to log out/log in.
+
 ```
 source /path_to/mpas-o-workflow/load-mpas.sh
 cd /path_to/mpas-o-workflow
@@ -256,7 +277,7 @@ cd build
 rm CMakeCache.txt                                                           # optional
 
 cmake .. \
--DCMAKE_INSTALL_PREFIX=$HOME/climate/mpas-o-workflow/install \              # use your own path here
+-DCMAKE_INSTALL_PREFIX=/path_to/mpas-o-workflow/install \                   # use your own path here
 -DCMAKE_CXX_COMPILER=mpicxx \                                               # use your own compiler here
 -DBUILD_SHARED_LIBS=false \
 -DLOWFIVE_PATH=$LOWFIVE \
@@ -272,18 +293,20 @@ make -j install
 
 ### Run the workflow
 
+You will use the spack environment you created earlier. You should not have a conda Compass environment active at this time.
+
 First time: create an `output.nc` file
 
 Because of a quirk in the way that the MPAS-Ocean I/O works, there needs to be an `output.nc` file
 on disk, otherwise the program will complain. Edit line 12 of `~/climate/mpas-o-workflow/mpas-henson.py` to set
 `passthru = True`
 
-Run the workflow.
+Run the workflow as follows.
 
 ```
 source /path_to/mpas-o-workflow/load-mpas.sh
 cd /path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
-mpiexec -n 6 python3 ~/climate/mpas-o-workflow/mpas-henson.py
+mpiexec -n 6 python3 /path_to/mpas-o-workflow/mpas-henson.py
 ```
 
 After the first time, you can set `passthru = False` and run again.
