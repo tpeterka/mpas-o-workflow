@@ -1,10 +1,14 @@
 # Instructions for Building MPAS-Ocean to Run in a Wilkins Workflow
 
-Installation is done through Spack. If you don't have Spack installed or if Spack is new to you, go [here](https://spack.readthedocs.io/en/latest/) first.
+Installation is done through Spack.
+If you don't have Spack installed or if Spack is new to you, go [here](https://spack.readthedocs.io/en/latest/) first.
+The recommended compiler is gcc version 11.
+Gcc version 12 can be used if optional particle tracing is not included.
+Gcc version 13 generates errors compiling mpas-ocean.
 
 -----
 
-## Clone this repository
+## Cloning this repository
 
 ```
 git clone https://github.com/tpeterka/mpas-o-workflow
@@ -12,7 +16,7 @@ git clone https://github.com/tpeterka/mpas-o-workflow
 
 -----
 
-## First time: Add the following Spack repositories to your local Spack installation
+## Adding the following Spack repositories to your local Spack installation
 
 LowFive
 ```
@@ -41,7 +45,7 @@ spack repo add spack-mpas-o
 
 ## Setting up Spack environment
 
-### First time: optional, uncomment particle tracing dependencies in create script:
+### Optional, if including particle tracing, uncomment particle tracing dependencies in create script:
 
 Edit /path_to/mpas-o-workflow/create-mpas.sh
 Around line 29, uncomment 4 lines that add dependencies for cuda, vtk, ndarray, and ftk
@@ -70,7 +74,7 @@ source /path_to/mpas-o-workflow/load-mpas.sh
 
 ## Building MPAS-Ocean
 
-### First time: clone MPAS-Ocean
+### Clone MPAS-Ocean
 
 ```
 git clone https://github.com/E3SM-Project/E3SM
@@ -96,13 +100,6 @@ git config --global user.email "<your email address>"
 git config --global user.name "<your name>"
 ```
 
-### First time: patch MPAS-Ocean
-
-```
-cd /path_to/E3SM
-git apply /path_to/mpas-o-workflow/E3SM.patch
-```
-
 ### Build MPAS-Ocean
 
 ```
@@ -114,7 +111,7 @@ This will take ~ 5 minutes to compile.
 
 -----
 
-## Setting up a test case to execute
+## Setting up a test case for MPAS-Ocean to execute
 
 Compass is an E3SM system for generating and running test cases for MPAS-Ocean, and relies on conda environments.
 If you don't have conda, install miniconda [here](https://docs.conda.io/en/latest/miniconda.html) as follows.
@@ -129,12 +126,12 @@ rm -rf /path_to/miniconda3/miniconda.sh
 
 The last step above will add a few lines to the end of your `.bashrc`. After
 installing Compass and creating a Compass environment in the next section, you
-my comment out those lines in `.bashrc`. Otherwise you will always be in a
+may comment out those lines in `.bashrc`. Otherwise you will always be in a
 conda environment when you log in.
 
 ### First time: install Compass and create Compass environment
 
-You should not have a spack environment active for compass.
+Deactivate the spack environment.
 ```
 spack env deactivate
 ```
@@ -147,7 +144,7 @@ git submodule update --init --recursive
 source load_dev_compass_1.4.0-alpha.2.sh        # assumes load_dev_compass_1.4.0-alpha.2.sh is the script created by the previous command
 ```
 
-### First time: create a compass configuration file for a new machine
+### First time: create a Compass configuration file for a new machine
 
 Assumes the config file is named /path_to/compass-env-only/compass.cfg and has these contents, or similar (yours may vary)
 
@@ -174,9 +171,13 @@ parallel_executable = mpiexec
 # cores_per_node = 4
 ```
 
-### First time: create a test case for the executable
+### Create a test case for MPAS-Ocean
 
 Assumes that `load_dev_compass_1.4.0-alpha.2.sh` is the name of the conda environment load script created initially
+Also assumes the test case being created is a 10km default baroclinic channel.
+Other test cases would be named similarly.
+See the [Compass docs](https://mpas-dev.github.io/compass/latest/users_guide/quick_start.html) for more information.
+The `compass list` command shows all available test cases (after loading the compass environment).
 Set `/path_to/compass-baroclinic-test` below where you want the test case to be created.
 
 ```
@@ -184,17 +185,26 @@ source /path_to/compass-env-only/load_dev_compass_1.4.0-alpha.2.sh
 compass setup -t ocean/baroclinic_channel/10km/default -w /path_to/compass-baroclinic-test -p /path_to/E3SM/components/mpas-ocean -f /path_to/compass-env-only/compass.cfg
 ```
 
-### First time: set up the initial state using compass and partition the mesh using gpmetis
+### Execute the initial state using Compass and partition the mesh using Gpmetis
 
 Assumes that `load_dev_compass_1.4.0-alpha.2.sh` is the name of the conda environment load script created initially
+Also requires loading the spack environment so that mpiexec executes the same mpi that was used to build mpas-ocean.
+However, the LowFive VOL connector needs to be unset.
 
 ```
 source /path_to/compass-env-only/load_dev_compass_1.4.0-alpha.2.sh
+source /path_to/mpas-ocean-workflow/load-mpas.sh
+unset HDF5_VOL_CONNECTOR
+unset HDF5_PLUGIN_PATH
 cd /path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/initial_state
 compass run
 cd ../forward
 gpmetis graph.info 4
 ```
+
+-----
+
+## Customize the MPAS-Ocean test case configuration files
 
 ### First time: edit `namelist.ocean`
 
@@ -263,6 +273,25 @@ the `streams.ocean` file:
     <var name="zMid"/>
 </stream>
 ```
+-----
+
+## Rebuild MPAS-Ocean and build the consumer application to run in a workflow
+
+### First time: patch MPAS-Ocean
+
+```
+cd /path_to/E3SM
+git apply /path_to/mpas-o-workflow/E3SM.patch
+```
+
+### First time: rebuild MPAS-Ocean as a shared object so that it can be loaded dynamicallly by the workflow
+
+```
+cd /path_to/E3SM/components/mpas-ocean
+make clean              # if dirty
+make -j gfortran
+```
+This will take ~ 5 minutes to compile.
 
 ### First time: build an example consumer application
 
@@ -313,6 +342,4 @@ mpiexec -n 6 python3 /path_to/mpas-o-workflow/mpas-henson.py
 ```
 
 After the first time, you can set `passthru = False` and run again.
-
-
 
