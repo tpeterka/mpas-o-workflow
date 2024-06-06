@@ -48,7 +48,7 @@ else:
 #             "--timesteps", "4", "--geo", "--accelerator", "cuda"], pm, nm)
     cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/ftk_shared.so",
     ["-f", "mpas-o-pt", "--input", "./mpas.yaml", "--output", "mpas.vtp", "--ptgeo-seeds",
-    "1,0,0,1,0,0,1,0,0", "--ptgeo-checkpoint-days", "1", "--timesteps", "3", "--geo", "--accelerator", "cuda"], pm, nm)
+    "1,0.5,0.5,1,3.0,3.0,1,0.0,0.0", "--ptgeo-checkpoint-days", "1", "--timesteps", "1", "--geo", "--accelerator", "cuda"], pm, nm)
     if passthru:
         h.to_mpi4py(pm.intercomm("producer", tag)).barrier()
     cons.proceed()

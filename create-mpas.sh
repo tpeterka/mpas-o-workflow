@@ -26,14 +26,16 @@ spack add netcdf-c@4.9+mpi
 spack add mpas-o-scorpio+hdf5
 
 # the following is for particle tracing with ftk; comment out if not needed
-spack add cuda
-spack add vtk@9.2.2
-spack add ndarray+hdf5+netcdf+mpi+cuda+vtk
-spack develop ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
-spack add ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
+# spack add cuda
+# spack add vtk@9.2.2
+# spack add ndarray+hdf5+netcdf+mpi+cuda+vtk
+# spack develop ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
+# spack add ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
 
 # install everything in environment
 echo "installing dependencies in environment"
+spack install henson        # install henson so that henson path is set
+export HENSON=`spack location -i henson`
 spack install
 
 # reset the environment (workaround for spack behavior)
