@@ -6,6 +6,7 @@
 #include "fmt/format.h"
 
 #define INFILE "output.nc"
+// #define INFILE "output/output.0001-01-01_00.00.00.nc"
 #define MAX_DIMS 10
 
 using communicator  = MPI_Comm;
@@ -54,7 +55,7 @@ int main(int argc, char* argv[])
     // debug
     fmt::print(stderr, "*** consumer after opening file ***\n");
 
-//     // -------- bottomDepth --------
+    // -------- bottomDepth --------
 
     // decomposition
     ndims           = 1;                    // dimensionality TODO: inquire from file
@@ -67,218 +68,217 @@ int main(int argc, char* argv[])
 
     PIOc_InitDecomp(iosysid, PIO_DOUBLE, ndims, &dim_len[0], (PIO_Offset)elements_per_pe, &compdof[0], &ioid, NULL, NULL, NULL);
 
-//     // read the metadata (get variable ID)
-//     varid = -1;
-//     PIOc_inq_varid(ncid, "bottomDepth", &varid);
-// 
-//     // debug
-//     fmt::print(stderr, "*** consumer after inquiring variable ID {} for bottomDepth and before reading data ***\n", varid);
-// 
-//     // read the data
-//     std::vector<double> bottomDepth(elements_per_pe);
-//     PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &bottomDepth[0]);
-// 
-//     // print the data values
-//     for (int i = 0; i < elements_per_pe; i++)
-//         fmt::print(stderr, "bottomDepth[{}] = {}\n", i, bottomDepth[i]);
+    // read the metadata (get variable ID)
+    varid = -1;
+    PIOc_inq_varid(ncid, "bottomDepth", &varid);
+
+    // debug
+    fmt::print(stderr, "*** consumer after inquiring variable ID {} for bottomDepth and before reading data ***\n", varid);
+
+    // read the data
+    std::vector<double> bottomDepth(elements_per_pe);
+    PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &bottomDepth[0]);
+
+    // print the data values
+    for (int i = 0; i < elements_per_pe; i++)
+        fmt::print(stderr, "bottomDepth[{}] = {}\n", i, bottomDepth[i]);
 
     // -------- xEdge --------
 
-//     // decomposition
-//     ndims           = 1;                    // dimensionality TODO: inquire from file
-//     dim_len[0]      = 2432;                 // size in each dimension TODO: inquire from file
-//     elements_per_pe = dim_len[0] / world.size();
-//     compdof.resize(elements_per_pe);
-// 
-//     for (int i = 0; i < elements_per_pe; i++)
-//         compdof[i] = world.rank() * elements_per_pe + i + 1;    // adding 1 fixes a scorpio bug I don't understand
-// 
-//     PIOc_InitDecomp(iosysid, PIO_DOUBLE, ndims, &dim_len[0], (PIO_Offset)elements_per_pe, &compdof[0], &ioid, NULL, NULL, NULL);
-// 
-//     // read the metadata (get variable ID)
-//     varid = -1;
-//     PIOc_inq_varid(ncid, "xEdge", &varid);
-// 
-//     // debug
-//     fmt::print(stderr, "*** consumer after inquiring variable ID {} for xEdge and before reading data ***\n", varid);
-// 
-//     // read the data
-//     std::vector<double> xEdge(elements_per_pe);
-//     PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &xEdge[0]);
-// 
-//     // print the data values
-//     for (int i = 0; i < elements_per_pe; i++)
-//         fmt::print(stderr, "xEdge[{}] = {}\n", i, xEdge[i]);
+    // decomposition
+    ndims           = 1;                    // dimensionality TODO: inquire from file
+    dim_len[0]      = 2432;                 // size in each dimension TODO: inquire from file
+    elements_per_pe = dim_len[0] / world.size();
+    compdof.resize(elements_per_pe);
+
+    for (int i = 0; i < elements_per_pe; i++)
+        compdof[i] = world.rank() * elements_per_pe + i + 1;    // adding 1 fixes a scorpio bug I don't understand
+
+    PIOc_InitDecomp(iosysid, PIO_DOUBLE, ndims, &dim_len[0], (PIO_Offset)elements_per_pe, &compdof[0], &ioid, NULL, NULL, NULL);
+
+    // read the metadata (get variable ID)
+    varid = -1;
+    PIOc_inq_varid(ncid, "xEdge", &varid);
+
+    // debug
+    fmt::print(stderr, "*** consumer after inquiring variable ID {} for xEdge and before reading data ***\n", varid);
+
+    // read the data
+    std::vector<double> xEdge(elements_per_pe);
+    PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &xEdge[0]);
+
+    // print the data values
+    for (int i = 0; i < elements_per_pe; i++)
+        fmt::print(stderr, "xEdge[{}] = {}\n", i, xEdge[i]);
 
     // -------- yEdge --------
 
-//     // decomposition
-//     ndims           = 1;                    // dimensionality TODO: inquire from file
-//     dim_len[0]      = 2432;                 // size in each dimension TODO: inquire from file
-//     elements_per_pe = dim_len[0] / world.size();
-//     compdof.resize(elements_per_pe);
-// 
-//     for (int i = 0; i < elements_per_pe; i++)
-//         compdof[i] = world.rank() * elements_per_pe + i + 1;    // adding 1 fixes a scorpio bug I don't understand
-// 
-//     PIOc_InitDecomp(iosysid, PIO_DOUBLE, ndims, &dim_len[0], (PIO_Offset)elements_per_pe, &compdof[0], &ioid, NULL, NULL, NULL);
-// 
-//     // read the metadata (get variable ID)
-//     varid = -1;
-//     PIOc_inq_varid(ncid, "yEdge", &varid);
-// 
-//     // debug
-//     fmt::print(stderr, "*** consumer after inquiring variable ID {} for yEdge and before reading data ***\n", varid);
-// 
-//     // read the data
-//     std::vector<double> yEdge(elements_per_pe);
-//     PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &yEdge[0]);
-// 
-//     // print the data values
-//     for (int i = 0; i < elements_per_pe; i++)
-//         fmt::print(stderr, "yEdge[{}] = {}\n", i, yEdge[i]);
+    // decomposition
+    ndims           = 1;                    // dimensionality TODO: inquire from file
+    dim_len[0]      = 2432;                 // size in each dimension TODO: inquire from file
+    elements_per_pe = dim_len[0] / world.size();
+    compdof.resize(elements_per_pe);
+
+    for (int i = 0; i < elements_per_pe; i++)
+        compdof[i] = world.rank() * elements_per_pe + i + 1;    // adding 1 fixes a scorpio bug I don't understand
+
+    PIOc_InitDecomp(iosysid, PIO_DOUBLE, ndims, &dim_len[0], (PIO_Offset)elements_per_pe, &compdof[0], &ioid, NULL, NULL, NULL);
+
+    // read the metadata (get variable ID)
+    varid = -1;
+    PIOc_inq_varid(ncid, "yEdge", &varid);
+
+    // debug
+    fmt::print(stderr, "*** consumer after inquiring variable ID {} for yEdge and before reading data ***\n", varid);
+
+    // read the data
+    std::vector<double> yEdge(elements_per_pe);
+    PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &yEdge[0]);
+
+    // print the data values
+    for (int i = 0; i < elements_per_pe; i++)
+        fmt::print(stderr, "yEdge[{}] = {}\n", i, yEdge[i]);
 
     // -------- zEdge --------
 
-//     // decomposition
-//     ndims           = 1;                    // dimensionality TODO: inquire from file
-//     dim_len[0]      = 2432;                 // size in each dimension TODO: inquire from file
-//     elements_per_pe = dim_len[0] / world.size();
-//     compdof.resize(elements_per_pe);
-// 
-//     for (int i = 0; i < elements_per_pe; i++)
-//         compdof[i] = world.rank() * elements_per_pe + i + 1;    // adding 1 fixes a scorpio bug I don't understand
-// 
-//     PIOc_InitDecomp(iosysid, PIO_DOUBLE, ndims, &dim_len[0], (PIO_Offset)elements_per_pe, &compdof[0], &ioid, NULL, NULL, NULL);
-// 
-//     // read the metadata (get variable ID)
-//     varid = -1;
-//     PIOc_inq_varid(ncid, "zEdge", &varid);
-// 
-//     // debug
-//     fmt::print(stderr, "*** consumer after inquiring variable ID {} for zEdge and before reading data ***\n", varid);
-// 
-//     // read the data
-//     std::vector<double> zEdge(elements_per_pe);
-//     PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &zEdge[0]);
-// 
-//     // print the data values
-//     for (int i = 0; i < elements_per_pe; i++)
-//         fmt::print(stderr, "zEdge[{}] = {}\n", i, zEdge[i]);
+    // decomposition
+    ndims           = 1;                    // dimensionality TODO: inquire from file
+    dim_len[0]      = 2432;                 // size in each dimension TODO: inquire from file
+    elements_per_pe = dim_len[0] / world.size();
+    compdof.resize(elements_per_pe);
+
+    for (int i = 0; i < elements_per_pe; i++)
+        compdof[i] = world.rank() * elements_per_pe + i + 1;    // adding 1 fixes a scorpio bug I don't understand
+
+    PIOc_InitDecomp(iosysid, PIO_DOUBLE, ndims, &dim_len[0], (PIO_Offset)elements_per_pe, &compdof[0], &ioid, NULL, NULL, NULL);
+
+    // read the metadata (get variable ID)
+    varid = -1;
+    PIOc_inq_varid(ncid, "zEdge", &varid);
+
+    // debug
+    fmt::print(stderr, "*** consumer after inquiring variable ID {} for zEdge and before reading data ***\n", varid);
+
+    // read the data
+    std::vector<double> zEdge(elements_per_pe);
+    PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &zEdge[0]);
+
+    // print the data values
+    for (int i = 0; i < elements_per_pe; i++)
+        fmt::print(stderr, "zEdge[{}] = {}\n", i, zEdge[i]);
 
     // -------- zTop --------
 
-//     // decomposition
-//     // even though it's a 3d dataspace, time is taken separately, and the decomposition is the
-//     // remaining 2d dimensions
-//     ndims           = 3;                    // dimensionality TODO: inquire from file
-//     dim_len[0]      = 3;                    // timestep TODO: inquire from file
-//     dim_len[1]      = 800;                  // edge TODO: inquire from file
-//     dim_len[2]      = 20;                   // vertical level TODO: inquire from file
-//     elements_per_pe = dim_len[1] * dim_len[2] / world.size();
-//     compdof.resize(elements_per_pe);
-// 
-//     for (int i = 0; i < elements_per_pe; i++)
-//         compdof[i] = world.rank() * elements_per_pe + i + 1;        // adding 1 fixes a scorpio bug I don't understand
-// 
-//     // starting dim_len at index 1 because index 0 is the time step
-//     PIOc_InitDecomp(iosysid, PIO_DOUBLE, ndims - 1, &dim_len[1], (PIO_Offset)elements_per_pe, &compdof[0], &ioid, NULL, NULL, NULL);
-// 
-//     // read the metadata (get variable ID)
-//     varid = -1;
-//     PIOc_inq_varid(ncid, "zTop", &varid);
-// 
-//     // debug
-//     fmt::print(stderr, "*** consumer after inquiring variable ID {} for zTop and before reading data ***\n", varid);
-// 
-//     // read the data
-//     std::vector<double> zTop(elements_per_pe);
-//     for (auto t = 0; t < dim_len[0]; t++)      // for all timesteps
-//     {
-//         // memory mode crashes with invalid dimension ID, unable to query dimension 1
-//         PIOc_setframe(ncid, varid, t);
-//         PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &zTop[0]);
-// 
-//         // print the data values
-//         for (int i = 0; i < elements_per_pe; i++)
-//             fmt::print(stderr, "time t = {} zTop[{}] = {}\n", t, i, zTop[i]);
-//     }
+    // decomposition
+    // even though it's a 3d dataspace, time is taken separately, and the decomposition is the
+    // remaining 2d dimensions
+    ndims           = 3;                    // dimensionality TODO: inquire from file
+    dim_len[0]      = 3;                    // timestep TODO: inquire from file
+    dim_len[1]      = 800;                  // edge TODO: inquire from file
+    dim_len[2]      = 20;                   // vertical level TODO: inquire from file
+    elements_per_pe = dim_len[1] * dim_len[2] / world.size();
+    compdof.resize(elements_per_pe);
+
+    for (int i = 0; i < elements_per_pe; i++)
+        compdof[i] = world.rank() * elements_per_pe + i + 1;        // adding 1 fixes a scorpio bug I don't understand
+
+    // starting dim_len at index 1 because index 0 is the time step
+    PIOc_InitDecomp(iosysid, PIO_DOUBLE, ndims - 1, &dim_len[1], (PIO_Offset)elements_per_pe, &compdof[0], &ioid, NULL, NULL, NULL);
+
+    // read the metadata (get variable ID)
+    varid = -1;
+    PIOc_inq_varid(ncid, "zTop", &varid);
+
+    // debug
+    fmt::print(stderr, "*** consumer after inquiring variable ID {} for zTop and before reading data ***\n", varid);
+
+    // read the data
+    std::vector<double> zTop(elements_per_pe);
+    for (auto t = 0; t < dim_len[0]; t++)      // for all timesteps
+    {
+        PIOc_setframe(ncid, varid, t);
+        PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &zTop[0]);
+
+        // print the data values
+        for (int i = 0; i < elements_per_pe; i++)
+            fmt::print(stderr, "time t = {} zTop[{}] = {}\n", t, i, zTop[i]);
+    }
 
     // -------- normalTransportVelocity --------
 
-//     // decomposition
-//     // even though it's a 3d dataspace, time is taken separately, and the decomposition is the
-//     // remaining 2d dimensions
-//     ndims           = 3;                    // dimensionality TODO: inquire from file
-//     dim_len[0]      = 3;                    // timestep TODO: inquire from file
-//     dim_len[1]      = 2432;                 // edge TODO: inquire from file
-//     dim_len[2]      = 20;                   // vertical level TODO: inquire from file
-//     elements_per_pe = dim_len[1] * dim_len[2] / world.size();
-//     compdof.resize(elements_per_pe);
-// 
-//     for (int i = 0; i < elements_per_pe; i++)
-//         compdof[i] = world.rank() * elements_per_pe + i + 1;        // adding 1 fixes a scorpio bug I don't understand
-// 
-//     // starting dim_len at index 1 because index 0 is the time step
-//     PIOc_InitDecomp(iosysid, PIO_DOUBLE, ndims - 1, &dim_len[1], (PIO_Offset)elements_per_pe, &compdof[0], &ioid, NULL, NULL, NULL);
-// 
-//     // read the metadata (get variable ID)
-//     varid = -1;
-//     PIOc_inq_varid(ncid, "normalTransportVelocity", &varid);
-// 
-//     // debug
-//     fmt::print(stderr, "*** consumer after inquiring variable ID {} for normalTransportVelocity and before reading data ***\n", varid);
-// 
-//     // read the data
-//     std::vector<double> normalTransportVelocity(elements_per_pe);
-//     for (auto t = 0; t < dim_len[0]; t++)      // for all timesteps
-//     {
-//         // memory mode crashes with varid -1
-// //         PIOc_setframe(ncid, varid, t);
-// //         PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &normalTransportVelocity[0]);
-// 
-//         // print the data values
-// //         for (int i = 0; i < elements_per_pe; i++)
-// //             fmt::print(stderr, "time t = {} normalTransportVelocity[{}] = {}\n", t, i, normalTransportVelocity[i]);
-//     }
+    // decomposition
+    // even though it's a 3d dataspace, time is taken separately, and the decomposition is the
+    // remaining 2d dimensions
+    ndims           = 3;                    // dimensionality TODO: inquire from file
+    dim_len[0]      = 3;                    // timestep TODO: inquire from file
+    dim_len[1]      = 2432;                 // edge TODO: inquire from file
+    dim_len[2]      = 20;                   // vertical level TODO: inquire from file
+    elements_per_pe = dim_len[1] * dim_len[2] / world.size();
+    compdof.resize(elements_per_pe);
+
+    for (int i = 0; i < elements_per_pe; i++)
+        compdof[i] = world.rank() * elements_per_pe + i + 1;        // adding 1 fixes a scorpio bug I don't understand
+
+    // starting dim_len at index 1 because index 0 is the time step
+    PIOc_InitDecomp(iosysid, PIO_DOUBLE, ndims - 1, &dim_len[1], (PIO_Offset)elements_per_pe, &compdof[0], &ioid, NULL, NULL, NULL);
+
+    // read the metadata (get variable ID)
+    varid = -1;
+    PIOc_inq_varid(ncid, "normalTransportVelocity", &varid);
+
+    // debug
+    fmt::print(stderr, "*** consumer after inquiring variable ID {} for normalTransportVelocity and before reading data ***\n", varid);
+
+    // read the data
+    std::vector<double> normalTransportVelocity(elements_per_pe);
+    for (auto t = 0; t < dim_len[0]; t++)      // for all timesteps
+    {
+        // memory mode crashes with varid -1
+        PIOc_setframe(ncid, varid, t);
+        PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &normalTransportVelocity[0]);
+
+        // print the data values
+        for (int i = 0; i < elements_per_pe; i++)
+            fmt::print(stderr, "time t = {} normalTransportVelocity[{}] = {}\n", t, i, normalTransportVelocity[i]);
+    }
 
     // -------- vertTransportVelocityTop --------
 
-//     // decomposition
-//     // even though it's a 3d dataspace, time is taken separately, and the decomposition is the
-//     // remaining 2d dimensions
-//     ndims           = 3;                    // dimensionality TODO: inquire from file
-//     dim_len[0]      = 3;                    // timestep TODO: inquire from file
-//     dim_len[1]      = 800;                  // edge TODO: inquire from file
-//     dim_len[2]      = 21;                   // vertical level TODO: inquire from file
-//     elements_per_pe = dim_len[1] * dim_len[2] / world.size();
-//     compdof.resize(elements_per_pe);
-// 
-//     for (int i = 0; i < elements_per_pe; i++)
-//         compdof[i] = world.rank() * elements_per_pe + i + 1;        // adding 1 fixes a scorpio bug I don't understand
-// 
-//     // starting dim_len at index 1 because index 0 is the time step
-//     PIOc_InitDecomp(iosysid, PIO_DOUBLE, ndims - 1, &dim_len[1], (PIO_Offset)elements_per_pe, &compdof[0], &ioid, NULL, NULL, NULL);
-// 
-//     // read the metadata (get variable ID)
-//     varid = -1;
-//     PIOc_inq_varid(ncid, "vertTransportVelocityTop", &varid);
-// 
-//     // debug
-//     fmt::print(stderr, "*** consumer after inquiring variable ID {} for vertTransportVelocityTop and before reading data ***\n", varid);
-// 
-//     // read the data
-//     std::vector<double> vertTransportVelocityTop(elements_per_pe);
-//     for (auto t = 0; t < dim_len[0]; t++)      // for all timesteps
-//     {
-//         // memory mode crashes with varid -1
-// //         PIOc_setframe(ncid, varid, t);
-// //         PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &vertTransportVelocityTop[0]);
-// 
-//         // print the data values
-// //         for (int i = 0; i < elements_per_pe; i++)
-// //             fmt::print(stderr, "time t = {} vertTransportVelocityTop[{}] = {}\n", t, i, vertTransportVelocityTop[i]);
-//     }
+    // decomposition
+    // even though it's a 3d dataspace, time is taken separately, and the decomposition is the
+    // remaining 2d dimensions
+    ndims           = 3;                    // dimensionality TODO: inquire from file
+    dim_len[0]      = 3;                    // timestep TODO: inquire from file
+    dim_len[1]      = 800;                  // edge TODO: inquire from file
+    dim_len[2]      = 21;                   // vertical level TODO: inquire from file
+    elements_per_pe = dim_len[1] * dim_len[2] / world.size();
+    compdof.resize(elements_per_pe);
+
+    for (int i = 0; i < elements_per_pe; i++)
+        compdof[i] = world.rank() * elements_per_pe + i + 1;        // adding 1 fixes a scorpio bug I don't understand
+
+    // starting dim_len at index 1 because index 0 is the time step
+    PIOc_InitDecomp(iosysid, PIO_DOUBLE, ndims - 1, &dim_len[1], (PIO_Offset)elements_per_pe, &compdof[0], &ioid, NULL, NULL, NULL);
+
+    // read the metadata (get variable ID)
+    varid = -1;
+    PIOc_inq_varid(ncid, "vertTransportVelocityTop", &varid);
+
+    // debug
+    fmt::print(stderr, "*** consumer after inquiring variable ID {} for vertTransportVelocityTop and before reading data ***\n", varid);
+
+    // read the data
+    std::vector<double> vertTransportVelocityTop(elements_per_pe);
+    for (auto t = 0; t < dim_len[0]; t++)      // for all timesteps
+    {
+        // memory mode crashes with varid -1
+        PIOc_setframe(ncid, varid, t);
+        PIOc_read_darray(ncid, varid, ioid, (PIO_Offset)elements_per_pe, &vertTransportVelocityTop[0]);
+
+        // print the data values
+        for (int i = 0; i < elements_per_pe; i++)
+            fmt::print(stderr, "time t = {} vertTransportVelocityTop[{}] = {}\n", t, i, vertTransportVelocityTop[i]);
+    }
 
     // clean up
     PIOc_closefile(ncid);
