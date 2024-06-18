@@ -62,6 +62,7 @@ spack add ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
 ```
 cd /path_to/mpas-o-workflow
 source ./create-mpas.sh     # requires being in the same directory to work properly
+source ./load-mpas.sh
 ```
 
 ### Subsequent times: load the Spack environment for MPAS-Ocean
