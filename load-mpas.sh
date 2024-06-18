@@ -36,7 +36,11 @@ export LD_LIBRARY_PATH=$HENSON/lib:$LD_LIBRARY_PATH
 echo "library paths are set for running MPAS-Ocean"
 
 # enable VOL plugin
-export HDF5_PLUGIN_PATH=$LOWFIVE/lib
+unset HDF5_PLUGIN_PATH
+unset HDF5_VOL_CONNECTOR
+lowfive_module=`python3 -c "import lowfive; print(lowfive._lowfive.__file__)"`
+lowfive_library=`ldd $lowfive_module | awk 'NF == 4 {print $3}; NF == 2 {print $1}' | grep lowfive`
+export HDF5_PLUGIN_PATH=`dirname $lowfive_library`
 export HDF5_VOL_CONNECTOR="lowfive under_vol=0;under_info={};"
 echo "environment variables are set for running LowFive"
 
