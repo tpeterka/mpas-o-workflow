@@ -5,8 +5,8 @@
 #include "pio.h"
 #include "fmt/format.h"
 
-#define BAROCLINIC
-// #define SOMA
+// #define BAROCLINIC
+#define SOMA
 
 #ifdef BAROCLINIC
 #define INFILE "output.nc"
