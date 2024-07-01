@@ -4,16 +4,7 @@
 #include <dlfcn.h>
 #include "pio.h"
 #include "fmt/format.h"
-
-#define BAROCLINIC
-// #define SOMA
-
-#ifdef BAROCLINIC
-#define INFILE "output.nc"
-#endif
-#ifdef SOMA
-#define INFILE "output/output.0001-01-01_00.00.00.nc"
-#endif
+#include "opts.h"
 
 using communicator  = MPI_Comm;
 
@@ -35,11 +26,32 @@ int main(int argc, char* argv[])
     std::vector<PIO_Offset> dimlens;
     std::vector<int>        int_dimlens;    // int version of dimlens (scorpio API mismatch)
     std::vector<PIO_Offset> compdof;
+    std::string             infile;
+    bool                    help;
+
+    // get command line arguments
+    using namespace opts;
+    Options ops;
+    ops
+        >> Option('f', "infile",    infile,         "input file name")
+        >> Option('h', "help",      help,           "show help")
+        ;
+
+    if (!ops.parse(argc,argv) || help)
+    {
+        if (world.rank() == 0)
+        {
+            std::cout << "Usage: " << argv[0] << " [OPTIONS]\n";
+            std::cout << "Reads various datasets.\n";
+            std::cout << ops;
+        }
+        return 1;
+    }
 
     // set error handling so that scorpio does not catch the error
-//     int ret;
-//     if ((ret = PIOc_set_iosystem_error_handling(PIO_DEFAULT, PIO_RETURN_ERROR, NULL)))
-//         return ret;
+    int ret;
+    if ((ret = PIOc_set_iosystem_error_handling(PIO_DEFAULT, PIO_RETURN_ERROR, NULL)))
+        return ret;
 
     // debug
     fmt::print(stderr, "*** consumer before opening file: local comm rank {} size {} ***\n", world.rank(), world.size());
@@ -48,7 +60,7 @@ int main(int argc, char* argv[])
     PIOc_Init_Intracomm(mpi_world, world.size(), ioproc_stride, ioproc_start, PIO_REARR_SUBSET, &iosysid);
 
     // open file for reading
-    PIOc_openfile(iosysid, &ncid, &format, INFILE, PIO_NOWRITE);
+    PIOc_openfile(iosysid, &ncid, &format, infile.c_str(), PIO_NOWRITE);
 
     // debug
     fmt::print(stderr, "*** consumer after opening file ***\n");
