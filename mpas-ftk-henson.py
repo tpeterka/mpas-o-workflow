@@ -46,9 +46,12 @@ else:
 #             ["-f", "mpas-o-pt", "--input", "/nfs/gce/projects/PEDAL-GCE/hguo/data/20210421_sim7_CORE_60to30E2r2/mpas.yaml",
 #             "--output", "mpas.vtp", "--ptgeo-seeds", "101,49,50,101,-48,-47,1,-1400,-1400", "--ptgeo-checkpoint-days", "1",
 #             "--timesteps", "4", "--geo", "--accelerator", "cuda"], pm, nm)
+
     cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/ftk_shared.so",
     ["-f", "mpas-o-pt", "--input", "./mpas.yaml", "--output", "mpas.vtp", "--ptgeo-seeds",
-    "1,0.5,0.5,1,3.0,3.0,1,0.0,0.0", "--ptgeo-checkpoint-days", "1", "--timesteps", "1", "--geo", "--accelerator", "cuda"], pm, nm)
+    "16,25,50,13,-15,17,1,-10,-10", "--ptgeo-checkpoint-days", "30", "--timesteps", "1", "--geo",
+    "--accelerator", "cuda", "--pt-delta-t",  "252288000"], pm, nm)
+
     if passthru:
         h.to_mpi4py(pm.intercomm("producer", tag)).barrier()
     cons.proceed()
