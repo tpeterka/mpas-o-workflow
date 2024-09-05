@@ -2,9 +2,10 @@
 
 Installation is done through Spack.
 If you don't have Spack installed or if Spack is new to you, go [here](https://spack.readthedocs.io/en/latest/) first.
-The recommended compiler is gcc version 11.
-Gcc version 12 can be used if optional particle tracing is not included.
-Gcc version 13 generates errors compiling mpas-ocean.
+The recommended compiler for GCE is gcc version 11 if particle tracing is
+installed; without particle tracing gcc version 12 can be used.
+The recommended compiler for Perlmutter is gcc version 12.
+Gcc version 13 generates errors compiling MPAS-Ocean.
 
 -----
 

@@ -104,7 +104,8 @@ include_directories         (SYSTEM ${SCORPIO_INCLUDE_DIR})
 
 # NetCDF
 if                          (NETCDF_PATH)
-    set                     (NETCDF_LIBRARY     ${NETCDF_PATH}/lib/libnetcdf.so)
+    #set                     (NETCDF_LIBRARY     ${NETCDF_PATH}/lib/libnetcdf.so)
+    set                     (NETCDF_LIBRARY     ${NETCDF_PATH}/lib64/libnetcdf.so)
     set                     (NETCDF_INCLUDE_DIR ${NETCDF_PATH}/include)
     message                 ("NETCDF_LIBRARY =  ${NETCDF_LIBRARY}")
     message                 ("NETCDF_INCLUDE_DIR =  ${NETCDF_INCLUDE_DIR}")
