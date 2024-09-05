@@ -1,8 +1,24 @@
 diff --git a/components/mpas-framework/Makefile b/components/mpas-framework/Makefile
-index 1f9b00844e..c94d2184ce 100644
+index 1f9b00844e..fdab2eb638 100644
 --- a/components/mpas-framework/Makefile
 +++ b/components/mpas-framework/Makefile
-@@ -608,6 +608,8 @@ endif
+@@ -588,8 +588,14 @@ endif
+ 		LIBS += $(NCLIBF)
+ 	endif # CHECK FOR NETCDF4
+ 	ifneq "$(NETCDFF)" ""
++ifneq ($(wildcard $(NETCDFF)/lib), )
++	NETCDFFLIBLOC = lib
++endif
++ifneq ($(wildcard $(NETCDFF)/lib64), )
++	NETCDFFLIBLOC = lib64
++endif
+ 		FCINCLUDES += -I$(NETCDFF)/include
+-		LIBS += -L$(NETCDFF)/$(NETCDFLIBLOC)
++		LIBS += -L$(NETCDFF)/$(NETCDFFLIBLOC)
+ 		LIBS += $(NCLIBF)
+ 	endif
+ 	LIBS += $(NCLIB)
+@@ -608,6 +614,8 @@ endif
  	LIBS += -L$(PNETCDF)/$(PNETCDFLIBLOC) -lpnetcdf
  endif
  
@@ -11,7 +27,7 @@ index 1f9b00844e..c94d2184ce 100644
  ifeq "$(USE_LAPACK)" "true"
  ifndef LAPACK
  $(error LAPACK is not set.  Please set LAPACK to the LAPACK install directory when USE_LAPACK=true)
-@@ -768,6 +770,7 @@ ifneq "$(PICFLAG)" ""
+@@ -768,6 +776,7 @@ ifneq "$(PICFLAG)" ""
  	CFLAGS += $(PICFLAG)
  	CXXFLAGS += $(PICFLAG)
  	LDFLAGS += $(PICFLAG)
@@ -19,7 +35,7 @@ index 1f9b00844e..c94d2184ce 100644
  	SHAREDLIB_MESSAGE="Position-independent code was generated."
  else
  $(error Position-independent code was requested but PIC flags are not available. Please add PIC flags for the '$(BUILD_TARGET)' target)
-@@ -1054,7 +1057,7 @@ drver:  $(AUTOCLEAN_DEPS) framework dycore
+@@ -1054,7 +1063,7 @@ drver:  $(AUTOCLEAN_DEPS) framework dycore
  
  
  mpas: $(AUTOCLEAN_DEPS) framework dycore drver
