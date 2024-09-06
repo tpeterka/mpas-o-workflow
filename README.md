@@ -42,6 +42,20 @@ git clone https://github.com/hguo/spack-mpas-o
 spack repo add spack-mpas-o
 ```
 
+Optional: Particle tracing
+Change ftk Spack recipe to pull from a fork
+```
+spack edit ftk
+```
+
+Edit lines 14-16 as follows
+```
+homepage = "https://github.com/tpeterka/ftk"
+url = "https://github.com/tpeterka/ftk/archive/0.0.7.1.tar.gz"
+git = "https://github.com/tpeterka/ftk.git"
+```
+And save the file.
+
 -----
 
 ## Setting up Spack environment
@@ -62,8 +76,16 @@ spack add ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
 
 ```
 cd /path_to/mpas-o-workflow
-source ./create-mpas.sh     # requires being in the same directory to work properly
+source ./create-mpas.sh             # requires being in the same directory to work properly
 source ./load-mpas.sh
+```
+
+### Optional, if including particle tracing
+After ftk builds, copy spack's installation of `ftk_shared.so` to
+/path/to/mpas-o-workflow/install/bin
+```
+export FTK=`spack location -i ftk`
+cp $FTK/bin/ftk_shared.so /path/to/mpas-o-workflow/install/bin
 ```
 
 ### Subsequent times: load the Spack environment for MPAS-Ocean
@@ -301,7 +323,7 @@ You will use the spack environment you created earlier. You should not have a co
 The easiest way to deactivate conda and Compass is to log out/log in.
 
 ```
-source /path_to/mpas-o-workflow/load-mpas.sh
+source /path_to/mpas-ocean-workflow/load-mpas.sh
 cd /path_to/mpas-o-workflow
 mkdir build
 cd build
@@ -338,9 +360,17 @@ installation locations.
 Run the workflow as follows.
 
 ```
-source /path_to/mpas-o-workflow/load-mpas.sh
-cd /path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
+# for workstations
+source /path_to/mpas-ocean-workflow/load-mpas.sh
 mpiexec -n 6 python3 /path_to/mpas-o-workflow/mpas-henson.py
+
+# for Perlmutter
+source /path_to/mpas-ocean-workflow/load-mpas-perlmutter.sh     # special script for Perlmutter
+cd /path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
+salloc --nodes 1 --qos interactive --time 10:00 --constraint cpu --account=<your account>
+mpiexec -n 6 python3 /path_to/mpas-o-workflow/mpas-henson.py
+# or
+srun -n 6 python3 /path_to/mpas-o-workflow/mpas-henson.py
 ```
 
 After the first time, you can set `passthru = False` and run again.
