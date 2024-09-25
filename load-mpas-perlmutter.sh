@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# activate the environment
-export SPACKENV=mpas
-spack env deactivate > /dev/null 2>&1
-spack env activate $SPACKENV
-echo "activated spack environment $SPACKENV"
-
 # set spack locations and vars for building mpas-o
 export MPAS_EXTERNAL_LIBS=""
 export MPAS_EXTERNAL_LIBS="${MPAS_EXTERNAL_LIBS} -lgomp"
@@ -23,10 +17,15 @@ export MPAS_SHELL=/bin/bash
 export CORE=ocean
 export SHAREDLIB=true
 export PROFILE_PRELIB="-L$HENSON/lib -lhenson-pmpi"
+
+# for perlmutter
+export MPI4PY=`spack location -i py-mpi4py`
+
 echo "environment variables are set for building MPAS-Ocean"
 
-set LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$NETCDF/lib:$LD_LIBRARY_PATH
+# for perlmutter
+export LD_LIBRARY_PATH=$NETCDF/lib64:$LD_LIBRARY_PATH
+
 export LD_LIBRARY_PATH=$PNETCDF/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$NETCDFF/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$HDF5/lib:$LD_LIBRARY_PATH
@@ -35,12 +34,18 @@ export LD_LIBRARY_PATH=$LOWFIVE/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$HENSON/lib:$LD_LIBRARY_PATH
 echo "library paths are set for running MPAS-Ocean"
 
+# for perlmutter
+export SPACK=`spack location -r`
+export PYTHONPATH=$SPACK/var/spack/environments/mpas/.spack-env/view/lib/python3.11/site-packages:/pscratch/sd/t/tpeterka/software/spack/var/spack/environments/mpas/.spack-env/view/lib:$PYTHONPATH
+export PATH=$SPACK/var/spack/environments/mpas/.spack-env/view/bin:$PATH
+
 # enable VOL plugin
 unset HDF5_PLUGIN_PATH
 unset HDF5_VOL_CONNECTOR
-lowfive_module=`python3 -c "import lowfive; print(lowfive._lowfive.__file__)"`
-lowfive_library=`ldd $lowfive_module | awk 'NF == 4 {print $3}; NF == 2 {print $1}' | grep lowfive`
-export HDF5_PLUGIN_PATH=`dirname $lowfive_library`
+
+# for perlmutter
+export HDF5_PLUGIN_PATH=$LOWFIVE/lib
+
 export HDF5_VOL_CONNECTOR="lowfive under_vol=0;under_info={};"
 echo "environment variables are set for running LowFive"
 

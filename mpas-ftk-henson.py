@@ -27,7 +27,8 @@ if pm.group() == "producer":
     else:
         vol.set_memory("*", "*")
     # set the following path to point to your installation of E3SM
-    prod = h.Puppet(str(Path.home()) + "/climate/E3SM/components/mpas-ocean/ocean_model.so", ["-n",
+#     prod = h.Puppet(str(Path.home()) + "/climate/E3SM/components/mpas-ocean/ocean_model.so", ["-n",
+    prod = h.Puppet(str(Path.home()) + "/E3SM/components/mpas-ocean/ocean_model.so", ["-n",
     "namelist.ocean", "-s", "streams.ocean"], pm, nm)
     prod.proceed()
     if passthru:
@@ -47,7 +48,7 @@ else:
 #             "--output", "mpas.vtp", "--ptgeo-seeds", "101,49,50,101,-48,-47,1,-1400,-1400", "--ptgeo-checkpoint-days", "1",
 #             "--timesteps", "4", "--geo", "--accelerator", "cuda"], pm, nm)
 
-    cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/ftk_shared.so",
+    cons = h.Puppet(str(Path.home()) + "/software/mpas-o-workflow/install/bin/ftk_shared.so",
     ["-f", "mpas-o-pt", "--input", "./mpas.yaml", "--output", "mpas.vtp", "--ptgeo-seeds",
     "16,25,50,13,-15,17,1,-10,-10", "--ptgeo-checkpoint-days", "30", "--timesteps", "1", "--geo",
     "--accelerator", "cuda", "--pt-delta-t",  "252288000"], pm, nm)
