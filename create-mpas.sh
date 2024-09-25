@@ -15,17 +15,18 @@ spack env create $SPACKENV $YAML
 echo "activating spack environment"
 spack env activate $SPACKENV
 
-spack develop lowfive@master build_type=Debug
+spack add mpich@4
+spack add hdf5@1.14+hl+mpi
+# spack develop lowfive@master build_type=Debug
 spack add lowfive
-
 spack add wilkins
 spack add henson+python+mpi-wrappers
-
 # spack develop netcdf-c@main+mpi build_system=cmake build_type=Debug
 # spack add netcdf-c@main+mpi
-spack add netcdf-c@4.9+mpi
-
-spack develop mpas-o-scorpio@master+hdf5 build_type=Debug
+spack add netcdf-c@4.9+mpi build_system=cmake
+spack add parallel-netcdf
+spack add netcdf-fortran@4.5.3
+# spack develop mpas-o-scorpio@master+hdf5 build_type=Debug
 spack add mpas-o-scorpio+hdf5
 
 # following is for optional debugging; comment out if not needed
@@ -37,7 +38,7 @@ spack add mpas-o-scorpio+hdf5
 spack add cuda
 spack add vtk@9.2.2
 spack add ndarray+hdf5+netcdf+mpi+cuda+vtk
-spack develop ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
+# spack develop ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
 spack add ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
 
 # install everything in environment
