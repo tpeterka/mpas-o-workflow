@@ -27,8 +27,8 @@ if pm.group() == "producer":
     else:
         vol.set_memory("*", "*")
     # set the following path to point to your installation of E3SM
-#     prod = h.Puppet(str(Path.home()) + "/climate/E3SM/components/mpas-ocean/ocean_model.so", ["-n",
-    prod = h.Puppet(str(Path.home()) + "/E3SM/components/mpas-ocean/ocean_model.so", ["-n",
+    prod = h.Puppet(str(Path.home()) + "/climate/E3SM/components/mpas-ocean/ocean_model.so", ["-n",
+#     prod = h.Puppet(str(Path.home()) + "/E3SM/components/mpas-ocean/ocean_model.so", ["-n",
     "namelist.ocean", "-s", "streams.ocean"], pm, nm)
     prod.proceed()
     if passthru:
@@ -45,8 +45,8 @@ else:
 
     # baroclinic channel test case
     # set the following path to point to your installation of mpas-o-workflow
-#     cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/consumer.so",
-    cons = h.Puppet(str(Path.home()) + "/software/mpas-o-workflow/install/bin/consumer.so",
+    cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/consumer.so",
+#     cons = h.Puppet(str(Path.home()) + "/software/mpas-o-workflow/install/bin/consumer.so",
             ["-f", "output.nc"], pm, nm)
 
     # SOMA test case

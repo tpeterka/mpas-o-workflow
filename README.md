@@ -344,28 +344,29 @@ make -j install
 
 ```
 
-### Run the workflow
+### Run the workflow with Henson
 
 You will use the spack environment you created earlier. You should not have a conda Compass environment active at this time.
 
-First time: create an `output.nc` file
+In `mpas-henson.py`, set the paths at lines 30 and 45 to point to your installation locations.
 
-Because of a quirk in the way that the MPAS-Ocean I/O works, there needs to be an `output.nc` file
-on disk, otherwise the program will complain. Edit line 12 of `~/climate/mpas-o-workflow/mpas-henson.py` to set
-`passthru = True`
-
-In `/path_to/mpas-o-workflow/mpas-henson.py`, set the paths at lines 30 and 45 to point to your
-installation locations.
+Because of the way NetCDF works, even for memory mode data transfers, there needs to be a valid netCDF file called
+`output.nc` on disk, otherwise the program will complain. For the first execution, set `passthru = True`
+in `mpas-henson.py` so that a file is produced on disk, and then leave the file
+there. Afterwards you may set `passthru = False` for memory mode.  Alternatively, you may copy the
+blank netcdf file `blank.nc` from the top level of the mpas-o-workflow repository to the current directory and
+rename `blank.nc` to `output.nc`.
 
 Run the workflow as follows.
 
 ```
 # for workstations
-source /path_to/mpas-ocean-workflow/load-mpas.sh
+source /path_to/mpas-o-workflow/load-mpas.sh
+cd /path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
 mpiexec -n 6 python3 /path_to/mpas-o-workflow/mpas-henson.py
 
 # for Perlmutter
-source /path_to/mpas-ocean-workflow/load-mpas-perlmutter.sh     # special script for Perlmutter
+source /path_to/mpas-o-workflow/load-mpas-perlmutter.sh     # special script for Perlmutter
 cd /path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
 salloc --nodes 1 --qos interactive --time 10:00 --constraint cpu --account=<your account>
 mpiexec -n 6 python3 /path_to/mpas-o-workflow/mpas-henson.py
@@ -375,3 +376,38 @@ srun -n 6 python3 /path_to/mpas-o-workflow/mpas-henson.py
 
 After the first time, you can set `passthru = False` and run again.
 
+
+### Run the workflow with Wilkins
+
+You will use the spack environment you created earlier. You should not have a conda Compass environment active at this time.
+
+Edit the paths in `wilkins-run.sh` for your installation.
+
+Edit the paths in `wilkins-config.yaml` for the producer and consumer tasks for your installation.
+
+```
+cd /path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
+
+/path_to/mpas-o-workflow/install/bin/mpas-roms/wilkins-run.sh
+```
+Because of the way NetCDF works, even for memory mode data transfers, there needs to be a valid netCDF file called
+`output.nc` on disk, otherwise the program will complain. For the first execution, set `passthru: 1` and `metadata: 0`
+for the producer and consumer tasks in `wilkins-config.yaml` so that a file is produced on disk, and then leave the file
+there. Afterwards you may set `passthru: 0` and `metadata: 1` for memory mode.  Alternatively, you may copy the
+blank netcdf file `blank.nc` from the top level of the mpas-o-workflow repository to the current directory and
+rename `blank.nc` to `output.nc`.
+
+Run the workflow as follows.
+
+```
+# for workstations
+source /path_to/mpas-ocean-workflow/load-mpas.sh
+cd /path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
+/path_to/mpas-o-workflow/wilkins-run.sh
+
+# for Perlmutter
+source /path_to/mpas-ocean-workflow/load-mpas-perlmutter.sh     # special script for Perlmutter
+cd /path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
+salloc --nodes 1 --qos interactive --time 10:00 --constraint cpu --account=<your account>
+/path_to/mpas-o-workflow/wilkins-run.sh
+```
