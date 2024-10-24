@@ -1,4 +1,4 @@
-# Instructions for Building MPAS-Ocean to Run in a Wilkins Workflow
+# Instructions for Building MPAS-Ocean to Run in a Workflow
 
 Installation is done through Spack.
 If you don't have Spack installed or if Spack is new to you, go [here](https://spack.readthedocs.io/en/latest/) first.
@@ -354,7 +354,8 @@ Because of the way NetCDF works, even for memory mode data transfers, there need
 `output.nc` on disk, otherwise the program will complain. For the first execution, set `passthru = True`
 in `mpas-henson.py` so that a file is produced on disk, and then leave the file
 there. Afterwards you may set `passthru = False` for memory mode.  Alternatively, you may copy the
-blank netcdf file `blank.nc` from the top level of the mpas-o-workflow repository to the current directory and
+blank netcdf file `blank.nc` from the top level of the mpas-o-workflow repository to the compass execution directory
+`/path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward` and
 rename `blank.nc` to `output.nc`.
 
 Run the workflow as follows.
@@ -394,7 +395,8 @@ Because of the way NetCDF works, even for memory mode data transfers, there need
 `output.nc` on disk, otherwise the program will complain. For the first execution, set `passthru: 1` and `metadata: 0`
 for the producer and consumer tasks in `wilkins-config.yaml` so that a file is produced on disk, and then leave the file
 there. Afterwards you may set `passthru: 0` and `metadata: 1` for memory mode.  Alternatively, you may copy the
-blank netcdf file `blank.nc` from the top level of the mpas-o-workflow repository to the current directory and
+blank netcdf file `blank.nc` from the top level of the mpas-o-workflow repository to the compass execution directory
+`/path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward` and
 rename `blank.nc` to `output.nc`.
 
 Run the workflow as follows.
