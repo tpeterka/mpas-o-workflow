@@ -3,16 +3,16 @@ tasks:
     nprocs: 4
     args: ["-n", "namelist.ocean", "-s", "streams.ocean"]
     outports:
-      - filename: "*.nc"
+      - filename: "*output.nc"
         dsets:
           - name: "*"
             passthru: 1
             metadata: 0
   - func: "/home/tpeterka/climate/mpas-o-workflow/install/bin/consumer.so"
     nprocs: 2
-    args: ["-f", "/home/tpeterka/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward/output.nc"]
+    args: ["-f", "output.nc"]
     inports:
-      - filename: "*.nc"
+      - filename: "*output.nc"
         dsets:
           - name: "*"
             passthru: 1
