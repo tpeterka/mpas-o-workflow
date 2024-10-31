@@ -36,25 +36,11 @@ Mpas-o-scorpio
 spack repo add /path_to/mpas-o-workflow/mpas-o-scorpio
 ```
 
-Optional: Particle tracing
+Optional: particle tracing
 ```
 git clone https://github.com/hguo/spack-mpas-o
 spack repo add spack-mpas-o
 ```
-
-Optional: Particle tracing
-Change ftk Spack recipe to pull from a fork
-```
-spack edit ftk
-```
-
-Edit lines 14-16 as follows
-```
-homepage = "https://github.com/tpeterka/ftk"
-url = "https://github.com/tpeterka/ftk/archive/0.0.7.1.tar.gz"
-git = "https://github.com/tpeterka/ftk.git"
-```
-And save the file.
 
 -----
 
