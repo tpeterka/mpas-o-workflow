@@ -34,8 +34,9 @@ spack add mpas-o-scorpio+hdf5
 # spack add cgdb
 # spack add tmux
 
-# # the following is for optional particle tracing with ftk; comment out if not needed
-spack add cuda
+# the following is for optional particle tracing with ftk; comment out if not needed
+# spack add cuda                  # for GCE
+spack add cuda@12.2             # for perlmutter
 spack add vtk@9.2.2
 spack add ndarray+hdf5+netcdf+mpi+cuda+vtk
 # spack develop ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
