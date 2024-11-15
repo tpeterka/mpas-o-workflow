@@ -352,14 +352,25 @@ source /path_to/mpas-o-workflow/load-mpas.sh
 cd /path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
 mpiexec -n 6 python3 /path_to/mpas-o-workflow/mpas-henson.py
 
-# for Perlmutter
+# for Perlmutter, baroclinic channel, test consumer
 source /path_to/mpas-o-workflow/load-mpas-perlmutter.sh     # special script for Perlmutter
 cd /path_to/compass-baroclinic-test/ocean/baroclinic_channel/10km/default/forward
-salloc --nodes 1 --qos interactive --time 10:00 --constraint cpu --account=<your account>
-mpiexec -n 6 python3 /path_to/mpas-o-workflow/mpas-henson.py
-# or
-srun -n 6 python3 /path_to/mpas-o-workflow/mpas-henson.py
+salloc --nodes 1 --qos interactive --time 20:00 --constraint cpu --account=<your account>
+srun -n 6 -l python3 -u /path_to/mpas-o-workflow/mpas-henson.py
+
+# for Perlmutter, SOMA, ftk consumer
+source /path_to/mpas-o-workflow/load-mpas-perlmutter.sh     # special script for Perlmutter
+export FTK=`spack location -i ftk`
+cd /path_to/compass-soma-test/ocean/soma/32km/default/forward
+salloc --nodes 1 --qos interactive --time 20:00 --constraint gpu --gpus-per-node=1 --account=<your account>
+srun -n 5 -l python3 -u /path_to/mpas-o-workflow/mpas-ftk-henson.py
+
+# between consecutive runs of SOMA (workaround for an MPAS-O bug)
+rm output/*
+rm analysis_members/*
+
 ```
+
 
 After the first time, you can set `passthru = False` and run again.
 

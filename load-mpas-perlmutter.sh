@@ -53,3 +53,5 @@ echo "environment variables are set for running LowFive"
 # could set a more reasonable number to distribute cores between mpi + openMP
 export OMP_NUM_THREADS=1
 
+# optional: using particle tracing
+export FTK=`spack location -i ftk`
