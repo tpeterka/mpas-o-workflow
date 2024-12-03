@@ -2,10 +2,38 @@
 
 Installation is done through Spack.
 If you don't have Spack installed or if Spack is new to you, go [here](https://spack.readthedocs.io/en/latest/) first.
-The recommended compiler for GCE is gcc version 11 if particle tracing is
-installed; without particle tracing gcc version 12 can be used.
-The recommended compiler for Perlmutter is gcc version 12.
-Gcc version 13 generates errors compiling MPAS-Ocean.
+The recommended compiler is gcc version 12.
+
+-----
+
+## For Perlmutter:
+
+The version of mpi included with the Cray programming environment is too old.
+Load the module for a modern mpich, and unload the Cray programming environment
+module:
+```
+module load mpich/4.2.2
+module unload PrgEnv-gnu/8.5.0
+```
+Edit `~/.spack/packages.yaml` to use the system-install mpi. (See spack
+documentation):
+```
+packages:
+  mpich:
+    externals:
+      - spec: mpich@4
+        modules:
+        - mpich/4.2.2
+```
+Edit the spack recipe for parallel-netcdf:
+`spack edit parallel-netcdf`
+Insert at line 157:
+```
+     def flag_handler(self, name, flags):
+         if name == "ldlibs":
+             flags.append("-L/opt/cray/libfabric/1.20.1/lib64")
+         return (None, None, flags)
+```
 
 -----
 
