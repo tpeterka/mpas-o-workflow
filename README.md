@@ -29,7 +29,7 @@ packages:
 ```
 Edit the spack recipe for parallel-netcdf:
 `spack edit parallel-netcdf`
-Insert at line 157:
+Insert at line 161:
 ```
      def flag_handler(self, name, flags):
          if name == "ldlibs":
