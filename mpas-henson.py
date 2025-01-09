@@ -46,15 +46,15 @@ else:
     # baroclinic channel test case
     # set the following path to point to your installation of mpas-o-workflow
 #     cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/consumer.so",
-    cons = h.Puppet(str(Path.home()) + "/software/mpas-o-workflow/install/bin/consumer.so",
-            ["-f", "output.nc"], pm, nm)
+#     cons = h.Puppet(str(Path.home()) + "/software/mpas-o-workflow/install/bin/consumer.so",
+#             ["-f", "output.nc"], pm, nm)
 
     # SOMA test case
     # set the following path to point to your installation of mpas-o-workflow
 #     cons = h.Puppet(str(Path.home()) + "/climate/mpas-o-workflow/install/bin/consumer.so",
 #             ["-f", "output/output.0001-01-01_00.00.00.nc"], pm, nm)
-#     cons = h.Puppet(str(Path.home()) + "/software/mpas-o-workflow/install/bin/consumer.so",
-#             ["-f", "output/output.0001-01-01_00.00.00.nc"], pm, nm)
+    cons = h.Puppet(str(Path.home()) + "/software/mpas-o-workflow/install/bin/consumer.so",
+            ["-f", "output/output.0001-01-01_00.00.00.nc"], pm, nm)
 
     if passthru:
         h.to_mpi4py(pm.intercomm("producer", tag)).barrier()

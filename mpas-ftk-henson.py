@@ -9,7 +9,7 @@ import os
 world = MPI.COMM_WORLD.Dup()
 size = world.Get_size()
 
-passthru = True
+passthru = False
 consumer_procs = 1 # make sure consumer_procs + MPAS_O procs = size
 
 # pm = h.ProcMap(world, [("producer", size)])
@@ -42,15 +42,11 @@ else:
     else:
         vol.set_memory("*", "*")
     vol.set_intercomm("*", "*", 0)
-#     cons = h.Puppet(str(os.environ['FTK']) + "/bin/ftk_shared.so",
-#             ["-f", "mpas-o-pt", "--input", "/nfs/gce/projects/PEDAL-GCE/hguo/data/20210421_sim7_CORE_60to30E2r2/mpas.yaml",
-#             "--output", "mpas.vtp", "--ptgeo-seeds", "101,49,50,101,-48,-47,1,-1400,-1400", "--ptgeo-checkpoint-days", "1",
-#             "--timesteps", "4", "--geo", "--accelerator", "cuda"], pm, nm)
 
     cons = h.Puppet(str(os.environ['FTK']) + "/bin/ftk_shared.so",
     ["-f", "mpas-o-pt", "--input", "./mpas.yaml", "--output", "mpas.vtp", "--ptgeo-seeds",
-    "16,25,50,13,-15,17,1,-10,-10", "--ptgeo-checkpoint-days", "30", "--timesteps", "1", "--geo",
-    "--accelerator", "cuda", "--pt-delta-t",  "252288000"], pm, nm)
+    "50,20,50,50,-20,20,1,-10,-10", "--ptgeo-checkpoint-days", "1", "--timesteps", "360", "--geo",
+    "--accelerator", "cuda"], pm, nm)
 
     if passthru:
         h.to_mpi4py(pm.intercomm("producer", tag)).barrier()

@@ -24,6 +24,8 @@ packages:
       - spec: mpich@4
         modules:
         - mpich/4.2.2
+        prefix: /global/common/software/nersc/pe/gpu/gnu/mpich/4.2.2
+    buildable: False
 ```
 Edit the spack recipe for parallel-netcdf:
 `spack edit parallel-netcdf`
@@ -46,6 +48,8 @@ git clone https://github.com/tpeterka/mpas-o-workflow
 -----
 
 ## Adding the following Spack repositories to your local Spack installation
+
+No environment should be active. Run `spack env status` to be sure.
 
 LowFive
 ```
