@@ -9,32 +9,25 @@ The recommended compiler is gcc version 12.
 ## For Perlmutter:
 
 The version of mpi included with the Cray programming environment is too old.
-Load the module for a modern mpich, and unload the Cray programming environment
-module:
+Use mpich built by me, and unload the Cray programming environment module:
+(recommend adding to your ~/.bash_profile)
 ```
-module load mpich/4.2.2
 module unload PrgEnv-gnu/8.5.0
+export PATH=/pscratch/sd/t/tpeterka/software/mpich-4.3.0rc3/install/bin:$PATH
+export LD_LIBRARY_PATH=/pscratch/sd/t/tpeterkasoftware/mpich-4.3.0rc3/install/lib:$LD_LIBRARY_PATH
 ```
-Edit `~/.spack/packages.yaml` to use the system-install mpi. (See spack
-documentation):
+Edit `~/.spack/packages.yaml` to use my mpich. (See spack documentation):
 ```
 packages:
   mpich:
     externals:
       - spec: mpich@4
-        modules:
-        - mpich/4.2.2
-        prefix: /global/common/software/nersc/pe/gpu/gnu/mpich/4.2.2
+        prefix: /pscratch/sd/t/tpeterka/software/mpich-4.3.0rc3/install
+        extra_attributes:
+          environment:
+            prepend_path:
+              LD_LIBRARY_PATH: /pscratch/sd/t/tpeterka/software/mpich-4.3.0rc3/install:/global/common/software/nersc9/darshan/default/lib:/opt/cray/pe/papi/7.0.1.2/lib64:/opt/cray/libfabric/1.20.1/lib64
     buildable: False
-```
-Edit the spack recipe for parallel-netcdf:
-`spack edit parallel-netcdf`
-Insert at line 161:
-```
-     def flag_handler(self, name, flags):
-         if name == "ldlibs":
-             flags.append("-L/opt/cray/libfabric/1.20.1/lib64")
-         return (None, None, flags)
 ```
 
 -----
