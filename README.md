@@ -26,7 +26,7 @@ packages:
         extra_attributes:
           environment:
             prepend_path:
-              LD_LIBRARY_PATH: /pscratch/sd/t/tpeterka/software/mpich-4.3.0rc3/install:/global/common/software/nersc9/darshan/default/lib:/opt/cray/pe/papi/7.0.1.2/lib64:/opt/cray/libfabric/1.20.1/lib64
+              LD_LIBRARY_PATH: /pscratch/sd/t/tpeterka/software/mpich-4.3.0rc3/install/lib:/global/common/software/nersc9/darshan/default/lib:/opt/cray/pe/papi/7.0.1.2/lib64:/opt/cray/libfabric/1.20.1/lib64
     buildable: False
 ```
 

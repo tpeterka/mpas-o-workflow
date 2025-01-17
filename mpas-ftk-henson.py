@@ -9,7 +9,7 @@ import os
 world = MPI.COMM_WORLD.Dup()
 size = world.Get_size()
 
-passthru = False
+passthru = True
 consumer_procs = 1 # make sure consumer_procs + MPAS_O procs = size
 
 # pm = h.ProcMap(world, [("producer", size)])
@@ -45,7 +45,7 @@ else:
 
     cons = h.Puppet(str(os.environ['FTK']) + "/bin/ftk_shared.so",
     ["-f", "mpas-o-pt", "--input", "./mpas.yaml", "--output", "mpas.vtp", "--ptgeo-seeds",
-    "50,20,50,50,-20,20,1,-10,-10", "--ptgeo-checkpoint-days", "1", "--timesteps", "360", "--geo",
+    "50,20,50,50,-20,20,1,-10,-10", "--ptgeo-checkpoint-days", "1", "--timesteps", "15", "--geo",
     "--accelerator", "cuda"], pm, nm)
 
     if passthru:
