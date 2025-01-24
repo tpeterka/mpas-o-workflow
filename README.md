@@ -154,7 +154,17 @@ git config --global user.name "<your name>"
 
 ### Build MPAS-Ocean
 
+The first time, apply patch to MPAS-Ocean
+
 ```
+cd /path_to/E3SM
+git apply /path_to/mpas-o-workflow/E3SM.patch
+```
+
+Then proceed to build MPAS-Ocean
+
+```
+source /path_to/mpas-o-workflow/load-mpas.sh
 cd /path_to/E3SM/components/mpas-ocean
 make clean              # if dirty
 make -j gfortran
@@ -327,25 +337,7 @@ the `streams.ocean` file:
 ```
 -----
 
-## Rebuild MPAS-Ocean and build the consumer application to run in a workflow
-
-### First time: patch MPAS-Ocean
-
-```
-cd /path_to/E3SM
-git apply /path_to/mpas-o-workflow/E3SM.patch
-```
-
-### First time: rebuild MPAS-Ocean as a shared object so that it can be loaded dynamicallly by the workflow
-
-```
-cd /path_to/E3SM/components/mpas-ocean
-make clean              # if dirty
-make -j gfortran
-```
-This will take ~ 5 minutes to compile.
-
-### First time: build an example consumer application
+## Build the consumer application to run in a workflow
 
 You will use the spack environment you created earlier. You should not have a conda Compass environment active at this time.
 The easiest way to deactivate conda and Compass is to log out/log in.
