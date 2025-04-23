@@ -28,7 +28,7 @@ class MpasOScorpio(CMakePackage):
     def cmake_args(self):
         args = ['-DCMAKE_C_COMPILER=%s' % self.spec['mpich'].mpicc,
                 '-DCMAKE_CXX_COMPILER=%s' % self.spec['mpich'].mpicxx,
-                '-DCMAKE_FC_COMPILER=%s' % self.spec['mpich'].mpifc,
+                '-DCMAKE_Fortran_COMPILER=%s' % self.spec['mpich'].mpifc,
                 '-DBUILD_SHARED_LIBS=true',
                 '-DPIO_USE_MALLOC=true',
                 '-DCMAKE_C_FLAGS=-fPIC',

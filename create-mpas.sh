@@ -36,12 +36,12 @@ spack add mpas-o-scorpio+hdf5
 
 # the following is for optional particle tracing with ftk; comment out if not needed
 # spack add cuda                  # for GCE
-spack add cuda@12.2             # for perlmutter
-spack add vtk@9.2.2
-spack develop ndarray+hdf5+netcdf+mpi+cuda+vtk build_type=Debug
-spack add ndarray+hdf5+netcdf+mpi+cuda+vtk
-spack develop ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk build_type=Debug
-spack add ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
+# spack add cuda@12.2             # for perlmutter
+# spack add vtk@9.2.2
+# spack develop ndarray+hdf5+netcdf+mpi+cuda+vtk build_type=Debug
+# spack add ndarray+hdf5+netcdf+mpi+cuda+vtk
+# spack develop ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk build_type=Debug
+# spack add ftk@mpas+cuda ^ndarray+hdf5+netcdf+mpi+cuda+vtk
 
 # install everything in environment
 echo "installing dependencies in environment"

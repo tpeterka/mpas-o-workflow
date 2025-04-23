@@ -13,40 +13,31 @@ Use mpich built by me, and unload the Cray programming environment module:
 (recommend adding to your ~/.bash_profile)
 ```
 module unload PrgEnv-gnu/8.5.0
-export PATH=/pscratch/sd/t/tpeterka/software/mpich-4.3.0rc3/install/bin:$PATH
-export LD_LIBRARY_PATH=/pscratch/sd/t/tpeterkasoftware/mpich-4.3.0rc3/install/lib:$LD_LIBRARY_PATH
+export PATH=/pscratch/sd/t/tpeterka/software/mpich-4.3.0/install/bin:$PATH
+export LD_LIBRARY_PATH=/pscratch/sd/t/tpeterkasoftware/mpich-4.3.0/install/lib:$LD_LIBRARY_PATH
 ```
-Edit `~/.spack/packages.yaml` to use my mpich. (See spack documentation):
+Edit `~/.spack/packages.yaml` to use my mpich and to set the compiler. (See spack documentation):
 ```
 packages:
+  gcc:
+    externals:
+    - spec: gcc@12.3.0 languages='c,c++,fortran'
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc-12
+          cxx: /usr/bin/g++-12
+          fortran: /usr/bin/gfortran-12
   mpich:
     externals:
-      - spec: mpich@4
-        prefix: /pscratch/sd/t/tpeterka/software/mpich-4.3.0rc3/install
-        extra_attributes:
-          environment:
-            prepend_path:
-              LD_LIBRARY_PATH: /pscratch/sd/t/tpeterka/software/mpich-4.3.0rc3/install/lib:/global/common/software/nersc9/darshan/default/lib:/opt/cray/pe/papi/7.0.1.2/lib64:/opt/cray/libfabric/1.20.1/lib64
+    - spec: mpich@4
+      prefix: /pscratch/sd/t/tpeterka/software/mpich-4.3.0/install
+      extra_attributes:
+        environment:
+          prepend_path:
+            LD_LIBRARY_PATH: /pscratch/sd/t/tpeterka/software/mpich-4.3.0/install/lib:/opt/cray/libfabric/1.20.1/lib64
     buildable: False
 ```
-Edit `~/.spack/linux/compilers.yaml` to use gcc 12.3. (See spack documentation):
-```
-compilers:
-- compiler:
-    spec: gcc@=12.3.0
-    paths:
-      cc: /usr/bin/gcc
-      cxx: /usr/bin/g++
-      f77: /usr/bin/gfortran
-      fc: /usr/bin/gfortran
-    flags: {}
-    operating_system: sles15
-    target: x86_64
-    modules: []
-    environment: {}
-    extra_rpaths: []
-```
-
 -----
 
 ## Cloning this repository
