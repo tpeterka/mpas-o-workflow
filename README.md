@@ -13,10 +13,11 @@ Use mpich built by me, and unload the Cray programming environment module:
 (recommend adding to your ~/.bash_profile)
 ```
 module unload PrgEnv-gnu/8.5.0
+module load gcc-native/12.3
 export PATH=/pscratch/sd/t/tpeterka/software/mpich-4.3.0/install/bin:$PATH
 export LD_LIBRARY_PATH=/pscratch/sd/t/tpeterkasoftware/mpich-4.3.0/install/lib:$LD_LIBRARY_PATH
 ```
-Edit `~/.spack/packages.yaml` to use my mpich and to set the compiler. (See spack documentation):
+Edit `~/.spack/packages.yaml` to use gcc 12.3.0 and my pre-installed mpich:
 ```
 packages:
   gcc:
