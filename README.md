@@ -183,6 +183,8 @@ installing Compass and creating a Compass environment in the next section, you
 may comment out those lines in `.bashrc`. Otherwise you will always be in a
 conda environment when you log in.
 
+Log out and log back in when instructed to do so by miniconda.
+
 ### First time: install Compass and create Compass environment
 
 Deactivate the spack environment.
@@ -195,7 +197,7 @@ git clone https://github.com/MPAS-Dev/compass.git compass-env-only
 cd /path_to/compass-env-only
 git submodule update --init --recursive
 ./conda/configure_compass_env.py --conda /path_to/miniconda3 --env_only
-source load_dev_compass_1.4.0-alpha.2.sh        # assumes load_dev_compass_1.4.0-alpha.2.sh is the script created by the previous command
+source load_dev_compass_1.7.0-alpha.2.sh        # assumes load_dev_compass_1.7.0-alpha.2.sh is the script created by the previous command
 ```
 
 ### First time: create a Compass configuration file for a new machine
@@ -227,7 +229,7 @@ parallel_executable = mpiexec
 
 ### Create a test case for MPAS-Ocean
 
-Assumes that `load_dev_compass_1.4.0-alpha.2.sh` is the name of the conda environment load script created initially
+Assumes that `load_dev_compass_1.7.0-alpha.2.sh` is the name of the conda environment load script created initially
 Also assumes the test case being created is a 10km default baroclinic channel.
 Other test cases would be named similarly.
 See the [Compass docs](https://mpas-dev.github.io/compass/latest/users_guide/quick_start.html) for more information.
@@ -235,18 +237,18 @@ The `compass list` command shows all available test cases (after loading the com
 Set `/path_to/compass-baroclinic-test` below where you want the test case to be created.
 
 ```
-source /path_to/compass-env-only/load_dev_compass_1.4.0-alpha.2.sh
+source /path_to/compass-env-only/load_dev_compass_1.7.0-alpha.2.sh
 compass setup -t ocean/baroclinic_channel/10km/default -w /path_to/compass-baroclinic-test -p /path_to/E3SM/components/mpas-ocean -f /path_to/compass-env-only/compass.cfg
 ```
 
 ### Execute the initial state using Compass and partition the mesh using Gpmetis
 
-Assumes that `load_dev_compass_1.4.0-alpha.2.sh` is the name of the conda environment load script created initially
+Assumes that `load_dev_compass_1.7.0-alpha.2.sh` is the name of the conda environment load script created initially
 Also requires loading the spack environment so that mpiexec executes the same mpi that was used to build mpas-ocean.
 However, the LowFive VOL connector needs to be unset.
 
 ```
-source /path_to/compass-env-only/load_dev_compass_1.4.0-alpha.2.sh
+source /path_to/compass-env-only/load_dev_compass_1.7.0-alpha.2.sh
 source /path_to/mpas-ocean-workflow/load-mpas.sh
 unset HDF5_VOL_CONNECTOR
 unset HDF5_PLUGIN_PATH
